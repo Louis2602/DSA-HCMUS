@@ -1,10 +1,11 @@
+// O(nlog2(n))
 #include <iostream>
 
 using namespace std;
 
 void heapRebuild(int pos, int a[], int n)
 {
-    int k = pos, v = a[k];
+    int k = pos;
     bool isHeap = false;
     while (!isHeap && 2 * k + 1 < n)
     {

@@ -1,33 +1,34 @@
 #include <iostream>
 using namespace std;
 
-int partition(int a[], int low, int high)
+int partition(int a[], int l, int r)
 {
-    int pivot = a[high];
-    int left = low;
-    int right = high - 1;
-    while (1)
+    int pivot = a[l];
+    int i = l + 1;
+    int j = r;
+    while (i <= j)
     {
-        while (left <= right && a[left] < pivot)
-            left++;
-        while (right >= left && a[right] > pivot)
-            right--;
-        if (left >= right)
-            break;
-        swap(a[left], a[right]);
-        left++;
-        right--;
+        while (i <= j && a[i] < pivot)
+            i++;
+        while (i <= j && a[j] > pivot)
+            j--;
+        if (i < j)
+        {
+            swap(a[i], a[j]);
+            i++;
+            j--;
+        }
     }
-    swap(a[left], a[high]);
-    return left;
+    swap(a[l], a[j]);
+    return j;
 }
 void quickSort(int a[], int low, int high)
 {
     if (low < high)
     {
-        int pi = partition(a, low, high);
-        quickSort(a, low, pi - 1);
-        quickSort(a, pi + 1, high);
+        int k = partition(a, low, high);
+        quickSort(a, low, k - 1);
+        quickSort(a, k + 1, high);
     }
 }
 void print(int a[], int n)

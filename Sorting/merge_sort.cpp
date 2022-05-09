@@ -1,49 +1,41 @@
+// O(nlog2(n))
 #include <iostream>
 using namespace std;
-void merge(int a[], int l, int m, int r)
+void merge(int arr[], int low, int high, int mid)
 {
-    int i, j, k;
-    int n1 = m - l + 1;
-    int n2 = r - m;
-    int *L = new int[n1];
-    int *R = new int[n2];
-
-    for (i = 0; i < n1; i++)
-        L[i] = a[l + i];
-    for (j = 0; j < n2; j++)
-        R[j] = a[m + 1 + j];
-
-    // Merge 2 temp array into the original array
-    i = j = 0;
-    k = l;
-    while (i < n1 && j < n2)
+    int i, j, k, c[50];
+    i = low;
+    k = low;
+    j = mid + 1;
+    while (i <= mid && j <= high)
     {
-        if (L[i] <= R[j])
+        if (arr[i] < arr[j])
         {
-            a[k] = L[i];
+            c[k] = arr[i];
+            k++;
             i++;
         }
         else
         {
-            a[k] = R[j];
+            c[k] = arr[j];
+            k++;
             j++;
         }
-        k++;
     }
-    while (i < n1)
+    while (i <= mid)
     {
-        a[k] = L[i];
+        c[k] = arr[i];
+        k++;
         i++;
-        k++;
     }
-    while (j < n2)
+    while (j <= high)
     {
-        a[k] = R[j];
-        j++;
+        c[k] = arr[j];
         k++;
+        j++;
     }
-    delete[] L;
-    delete[] R;
+    for (i = low; i < k; i++)
+        arr[i] = c[i];
 }
 void mergeSort(int a[], int l, int r)
 {
@@ -52,7 +44,7 @@ void mergeSort(int a[], int l, int r)
         int m = (l + r) / 2;
         mergeSort(a, l, m);
         mergeSort(a, m + 1, r);
-        merge(a, l, m, r);
+        merge(a, l, r, m);
     }
 }
 void print(int a[], int n)
