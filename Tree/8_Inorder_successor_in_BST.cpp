@@ -7,7 +7,7 @@ struct Node
     Node *left;
     Node *right;
 };
-Node *GetNewNode(int data)
+Node *createNode(int data)
 {
     Node *newNode = new Node();
     newNode->data = data;
@@ -18,7 +18,7 @@ Node *Insert(Node *root, int data)
 {
     if (root == NULL) // empty tree
     {
-        root = GetNewNode(data);
+        root = createNode(data);
     }
     else if (data <= root->data)
     {
@@ -49,7 +49,7 @@ Node *Find(Node *root, int data)
     else
         return Find(root->right, data);
 }
-//Function to find successor
+// Function to find successor
 Node *Getsuccessor(Node *root, int data)
 {
     // Search the Node - O(h)
