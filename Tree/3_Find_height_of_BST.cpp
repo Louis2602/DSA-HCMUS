@@ -6,7 +6,7 @@ struct BstNode
     BstNode *left;
     BstNode *right;
 };
-BstNode *GetNewNode(int data)
+BstNode *createNode(int data)
 {
     BstNode *newNode = new BstNode();
     newNode->data = data;
@@ -17,7 +17,7 @@ BstNode *Insert(BstNode *root, int data)
 {
     if (root == NULL) // empty tree
     {
-        root = GetNewNode(data);
+        root = createNode(data);
     }
     else if (data <= root->data)
     {

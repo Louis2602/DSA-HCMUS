@@ -8,7 +8,7 @@ struct Node
     Node *left;
     Node *right;
 };
-Node *GetNewNode(char data)
+Node *createNode(char data)
 {
     Node *newNode = new Node();
     newNode->data = data;
@@ -19,7 +19,7 @@ Node *Insert(Node *root, char data)
 {
     if (root == NULL) // empty tree
     {
-        root = GetNewNode(data);
+        root = createNode(data);
     }
     else if (data <= root->data)
     {

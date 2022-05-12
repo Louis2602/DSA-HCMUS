@@ -8,7 +8,7 @@ struct Node
     Node *right;
 };
 
-Node *GetNewNode(int data)
+Node *createNode(int data)
 {
     Node *newNode = new Node();
     newNode->data = data;
@@ -19,7 +19,7 @@ Node *Insert(Node *root, int data)
 {
     if (root == NULL) // empty tree
     {
-        root = GetNewNode(data);
+        root = createNode(data);
     }
     else if (data <= root->data)
     {
@@ -86,7 +86,7 @@ void LevelOrder(Node *root)
         return;
     queue<Node *> Q;
     Q.push(root);
-    //while there is at least one discovered node
+    // while there is at least one discovered node
     while (!Q.empty())
     {
         Node *current = Q.front();
@@ -95,7 +95,7 @@ void LevelOrder(Node *root)
             Q.push(current->left);
         if (current->right != NULL)
             Q.push(current->right);
-        Q.pop(); //removing element at front
+        Q.pop(); // removing element at front
     }
 }
 
