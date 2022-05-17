@@ -11,15 +11,16 @@ struct Examinee
         social_science, foreign_language;
 };
 
-int readFile(char *filename, Examinee e[])
+void readFile(char *filename, Examinee e[], int n)
 {
     fstream fs(filename, ios::in);
     string tmp;
     getline(fs, tmp);
     int i = 0;
-    while (!fs.eof())
+    char c;
+    for (int i = 0; i < n; i++)
     {
-        getline(fs, tmp, ',');
+        getline(fs, e[i].id, ',');
         getline(fs, tmp, ',');
         fs >> e[i].math;
         fs >> e[i].literature;
@@ -34,18 +35,29 @@ int readFile(char *filename, Examinee e[])
         fs >> e[i].foreign_language;
         getline(fs, tmp, ',');
         getline(fs, tmp);
-        i++;
     }
-    return i;
 }
 
+int readLines(char *filename)
+{
+    fstream fs(filename, ios::in);
+    string s;
+    int n = 0;
+    while (!fs.eof())
+    {
+        getline(fs, s);
+        n++;
+    }
+    return n;
+}
 Examinee readExaminee(string line_info)
 {
 }
 int main()
 {
-    char *filename = "data.txt";
-    Examinee *e = new Examinee[20000];
-    int n = readFile(filename, e);
+    char filename[] = "data.txt";
+    int n = readLines(filename);
+    Examinee *e = new Examinee[n];
+    readFile(filename, e, n);
     return 0;
 }
