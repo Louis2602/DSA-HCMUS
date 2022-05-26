@@ -26,33 +26,6 @@ void Insert(NODE *&pRoot, int x) {
         Insert(pRoot->left, x);
     }
 }
-void printPreorder(NODE* pRoot)
-{
-    if (pRoot == NULL)
-        return;
-    /* first print data of node */
-    cout << pRoot->data << " ";
-    /* then recur on left subtree */
-    printPreorder(pRoot->left);
-    /* now recur on right subtree */
-    printPreorder(pRoot->right);
-}
-void LevelOrder(NODE* pRoot) {
-    if (pRoot == NULL)
-        return;
-    queue<NODE *> Q;
-    Q.push(pRoot);
-    while(!Q.empty()) {
-        NODE *cur = Q.front();
-        cout << cur->data << " ";
-        if(cur->left != NULL)
-            Q.push(cur->left);
-        if(cur->right != NULL)
-            Q.push(cur->right);
-        Q.pop();
-    }
-    cout << '\n';
-}
 
 int countNode(NODE* pRoot) {
     if(pRoot == NULL)
@@ -86,6 +59,24 @@ NODE *createTree(int a[], int n, int i) {
     return pRoot;
 }
 
+int Height(NODE* pRoot) {
+    if(pRoot == NULL)
+        return 0;
+    int left_height = Height(pRoot->left);
+    int right_height = Height(pRoot->right);
+    return max(left_height, right_height) + 1;
+}
+void preOrder(NODE* pRoot)
+{
+    if (pRoot == NULL)
+        return;
+    /* first print data of node */
+    cout << pRoot->data << " ";
+    /* then recur on left subtree */
+    preOrder(pRoot->left);
+    /* now recur on right subtree */
+    preOrder(pRoot->right);
+}
 void inOrder(NODE *pRoot) {
     if(pRoot != NULL) {
         inOrder(pRoot->left);
@@ -93,17 +84,41 @@ void inOrder(NODE *pRoot) {
         inOrder(pRoot->right);
     }
 }
+void postOrder(NODE *pRoot) {
+    if (pRoot == NULL)
+        return;
+    postOrder(pRoot->left);
+    postOrder(pRoot->right);
+    cout << pRoot->data << " ";
+}
+void LevelOrder(NODE* pRoot) {
+    if (pRoot == NULL)
+        return;
+    queue<NODE *> Q;
+    Q.push(pRoot);
+    while(!Q.empty()) {
+        NODE *cur = Q.front();
+        cout << cur->data << " ";
+        if(cur->left != NULL)
+            Q.push(cur->left);
+        if(cur->right != NULL)
+            Q.push(cur->right);
+        Q.pop();
+    }
+}
+
 int main() {
     NODE *pRoot = NULL;
-    int a[] = {1, 2, 3, 4, 5, 6};
-    Insert(pRoot, 1);
-    Insert(pRoot, 2);
-    Insert(pRoot, 3);
-    Insert(pRoot, 4);
+    int a[] = {5, 3, 6, 4, 2, 7};
     Insert(pRoot, 5);
+    Insert(pRoot, 3);
     Insert(pRoot, 6);
-    //printPreorder(pRoot);
-    LevelOrder(pRoot);
+    Insert(pRoot, 4);
+    Insert(pRoot, 2);
+    Insert(pRoot, 7);
+    cout << "LevelOrder: ";
+    LevelOrder(pRoot); // 5 3 6 4 2 7
+    cout << '\n';
     /*cout << "\nNumber of nodes: " << countNode(pRoot) << '\n';
     cout << "Sum of all nodes: " << sumNode(pRoot) << '\n';
     NODE *search = Search(pRoot, 6);
@@ -111,8 +126,18 @@ int main() {
         cout << "Found!";
     else
         cout << "Not found!";*/
-    int n = sizeof(a) / sizeof(a[0]);
-    NODE *r = createTree(a, n, 0);
-    LevelOrder(r);
+    /*int n = sizeof(a) / sizeof(a[0]);
+    NODE *r = createTree(a, n, 0);*/
+    cout << "PreOrder: ";
+    preOrder(pRoot); // 5 3 2 4 6 7
+    cout << '\n';
+    cout << "InOrder: ";
+    inOrder(pRoot); // 2 3 4 5 6 7
+    cout << '\n';
+    cout << "PostOrder: ";
+    postOrder(pRoot); // 2 4 3 7 6 5
+    cout << '\n';
+    cout << "Height = ";
+    cout << Height(pRoot);
     return 0;
 }
