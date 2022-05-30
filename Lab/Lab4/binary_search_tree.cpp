@@ -66,6 +66,17 @@ int Height(NODE* pRoot) {
     int right_height = Height(pRoot->right);
     return max(left_height, right_height) + 1;
 }
+
+int getLength(NODE *pRoot) {
+    if(pRoot == NULL)
+        return 0;
+    return 1 + getLength(pRoot->left) + getLength(pRoot->right);
+}
+bool isPerfectBST(NODE *pRoot) {
+    int len = getLength(pRoot);
+    cout << len << endl;
+    return !(len & (len + 1));
+}
 void preOrder(NODE* pRoot)
 {
     if (pRoot == NULL)
@@ -112,10 +123,11 @@ int main() {
     int a[] = {5, 3, 6, 4, 2, 7};
     Insert(pRoot, 5);
     Insert(pRoot, 3);
+    Insert(pRoot, 7);
     Insert(pRoot, 6);
     Insert(pRoot, 4);
     Insert(pRoot, 2);
-    Insert(pRoot, 7);
+    //Insert(pRoot, 8);
     cout << "LevelOrder: ";
     LevelOrder(pRoot); // 5 3 6 4 2 7
     cout << '\n';
@@ -138,6 +150,11 @@ int main() {
     postOrder(pRoot); // 2 4 3 7 6 5
     cout << '\n';
     cout << "Height = ";
-    cout << Height(pRoot);
+    cout << Height(pRoot); 
+    /*if(isPerfectBST(pRoot))
+        cout << "YES\n";
+    else cout << "NO\n";*/
+    cout << '\n';
+    cout << "Height of 6 is: " << heightNode(pRoot, 6); 
     return 0;
 }
