@@ -1,4 +1,5 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <queue>
 using namespace std;
 struct NODE
 {
@@ -8,16 +9,15 @@ struct NODE
 	int height;
 };
 
-
 int height(NODE *N)
 {
 	if (N == NULL)
 		return 0;
 	return N->height;
 }
-NODE* createNode(int key)
+NODE *createNode(int key)
 {
-	NODE* node = new NODE;
+	NODE *node = new NODE;
 	node->key = key;
 	node->left = NULL;
 	node->right = NULL;
@@ -36,9 +36,11 @@ NODE *rightRotate(NODE *y)
 
 	// Update heights
 	y->height = max(height(y->left),
-					height(y->right)) + 1;
+					height(y->right)) +
+				1;
 	x->height = max(height(x->left),
-					height(x->right)) + 1;
+					height(x->right)) +
+				1;
 	// Return new root
 	return x;
 }
@@ -53,9 +55,11 @@ NODE *leftRotate(NODE *x)
 
 	// Update heights
 	x->height = max(height(x->left),
-					height(x->right)) + 1;
+					height(x->right)) +
+				1;
 	y->height = max(height(y->left),
-					height(y->right)) + 1;
+					height(y->right)) +
+				1;
 	// Return new root
 	return y;
 }
@@ -67,10 +71,10 @@ int getBalance(NODE *N)
 	return height(N->left) - height(N->right);
 }
 
-NODE* Insert(NODE* pRoot, int key)
+NODE *Insert(NODE *pRoot, int key)
 {
 	if (pRoot == NULL)
-		return(createNode(key));
+		return (createNode(key));
 
 	if (key < pRoot->key)
 		pRoot->left = Insert(pRoot->left, key);
@@ -81,7 +85,7 @@ NODE* Insert(NODE* pRoot, int key)
 
 	/* 2. Update height of this ancestor node */
 	pRoot->height = 1 + max(height(pRoot->left),
-						height(pRoot->right));
+							height(pRoot->right));
 
 	int balance = getBalance(pRoot);
 
@@ -112,7 +116,7 @@ NODE* Insert(NODE* pRoot, int key)
 
 void preOrder(NODE *pRoot)
 {
-	if(pRoot != NULL)
+	if (pRoot != NULL)
 	{
 		cout << pRoot->key << " ";
 		preOrder(pRoot->left);
@@ -120,6 +124,23 @@ void preOrder(NODE *pRoot)
 	}
 }
 
+void levelOrder(NODE *pRoot)
+{
+	if (pRoot == NULL)
+		return;
+	queue<NODE *> Q;
+	Q.push(pRoot);
+	while (!Q.empty())
+	{
+		NODE *cur = Q.front();
+		cout << cur->key << " ";
+		if (cur->left != NULL)
+			Q.push(cur->left);
+		if (cur->right != NULL)
+			Q.push(cur->right);
+		Q.pop();
+	}
+}
 int main()
 {
 	NODE *pRoot = NULL;
@@ -129,17 +150,19 @@ int main()
 	pRoot = Insert(pRoot, 40);
 	pRoot = Insert(pRoot, 50);
 	pRoot = Insert(pRoot, 25);
-	
+	pRoot = Insert(pRoot, 35);
+
 	/* The constructed AVL Tree would be
 				30
-    		   / \
+			   / \
 			  20 40
-			 / \ \
-		    10 25 50
+			 / \   \
+			10 25  50
 	*/
 	cout << "Preorder traversal of the "
 			"constructed AVL tree is \n";
-	preOrder(pRoot);
-	
+	// preOrder(pRoot);
+	levelOrder(pRoot);
+
 	return 0;
 }
