@@ -29,9 +29,9 @@ Examinee readExaminee(string line_info)
     }
     return e;
 }
-vector<Examinee> readExamineeList(string fname)
+vector<Examinee> readExamineeList(string filename)
 {
-    fstream fs(fname, ios::in);
+    fstream fs(filename, ios::in);
     vector<Examinee> ve;
     Examinee t;
     string tmp;
