@@ -7,13 +7,12 @@ void countWords(string str) {
     stringstream s(str);
     string word;
     string tmp[100];
-    int i = 0;
+    int n = 0;
     while(s >> word) {
-        tmp[i] = word;     
-        i++;
+        tmp[n] = word;     
+        n++;
     }
     // sort words
-    int n = i;
     for(int i=0; i<n-1; i++) {
         for(int j=i+1; j<n; j++) {
             if(tmp[i] > tmp[j])
