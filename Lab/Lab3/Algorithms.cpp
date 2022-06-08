@@ -1,27 +1,68 @@
 #include <iostream>
+#include "DataGenerator.cpp"
 #include <string>
 using namespace std;
 
 void bubbleSort(int a[], int n);
+void AlgorithmMode(int algoMode);
+void displayMenu();
+int main()
+{
+    displayMenu();
+    return 0;
+}
+void displayMenu()
+{
+    int option, algoMode;
+    string input_file, input_order;
+    cout << "\t\t===============================\n";
+    cout << "\t\t|       SORTING PROGRAM       |\n";
+    cout << "\t\t===============================\n";
+    cout << "\t\t|1. Sorting Algorithm         |\n";
+    cout << "\t\t|2. Input file                |\n";
+    cout << "\t\t|3. Input size                |\n";
+    cout << "\t\t|4. Input order               |\n";
+    cout << "\t\t|0. Exit                      |\n";
+    cout << "\t\t===============================\n";
+    int input_size;
+    cout << "\t\tOption: ";
+    cin >> option;
+    switch (option)
+    {
+    case 1:
+        AlgorithmMode(algoMode);
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+    case 0:
+        cout << "\t\tExit successful!\n";
+        exit(1);
+        break;
+    }
+}
 void AlgorithmMode(int algoMode)
 {
     cout << '\n';
-    cout << "===============================\n";
-    cout << "|        ALGORITHM MODE       |\n";
-    cout << "===============================\n";
-    cout << "|1. Selection Sort            |\n";
-    cout << "|2. Insertion Sort            |\n";
-    cout << "|3. Bubble Sort               |\n";
-    cout << "|4. Shaker Sort               |\n";
-    cout << "|5. Shell Sort                |\n";
-    cout << "|6. Heap Sort                 |\n";
-    cout << "|7. Merge Sort                |\n";
-    cout << "|8. Quick Sort                |\n";
-    cout << "|9. Counting Sort             |\n";
-    cout << "|10. Radix Sort               |\n";
-    cout << "|11. Flash Sort               |\n";
-    cout << "===============================\n";
-    cout << "Choose your algorithm: ";
+    cout << "\t\t================================\n";
+    cout << "\t\t|        ALGORITHM MODE        |\n";
+    cout << "\t\t================================\n";
+    cout << "\t\t|1.  Selection Sort            |\n";
+    cout << "\t\t|2.  Insertion Sort            |\n";
+    cout << "\t\t|3.  Bubble Sort               |\n";
+    cout << "\t\t|4.  Shaker Sort               |\n";
+    cout << "\t\t|5.  Shell Sort                |\n";
+    cout << "\t\t|6.  Heap Sort                 |\n";
+    cout << "\t\t|7.  Merge Sort                |\n";
+    cout << "\t\t|8.  Quick Sort                |\n";
+    cout << "\t\t|9.  Counting Sort             |\n";
+    cout << "\t\t|10. Radix Sort                |\n";
+    cout << "\t\t|11. Flash Sort                |\n";
+    cout << "\t\t================================\n";
+    cout << "\t\tChoose your algorithm: ";
     cin >> algoMode;
     int a[] = {5, 3, 4, 2, 6, 1};
     int n = 5;
@@ -52,48 +93,13 @@ void AlgorithmMode(int algoMode)
         break;
     }
 }
-int main()
-{
-    int option, algoMode;
-    string input_file, input_order;
-    cout << "===============================\n";
-    cout << "|       SORTING PROGRAM       |\n";
-    cout << "===============================\n";
-    cout << "|1. Sorting Algorithm         |\n";
-    cout << "|2. Input file                |\n";
-    cout << "|3. Input size                |\n";
-    cout << "|4. Input order               |\n";
-    cout << "|0. Exit                      |\n";
-    cout << "===============================\n";
-    int input_size;
-    cout << "Option: ";
-    cin >> option;
-    switch (option)
-    {
-    case 1:
-        AlgorithmMode(algoMode);
-        break;
-    case 2:
-        break;
-    case 3:
-        break;
-    case 4:
-        break;
-    case 0:
-        cout << "Exit successful!\n";
-        exit(1);
-        break;
-    }
-
-    return 0;
-}
 void bubbleSort(int a[], int n)
 {
     for (int i = 1; i < n; i++)
         for (int j = n - 1; j >= i; j--)
             if (a[j] < a[j - 1])
                 swap(a[j], a[j - 1]);
-    cout << "OUTPUT: ";
+    cout << "\t\tOUTPUT: ";
     for (int i = 0; i < n; i++)
         cout << a[i] << " ";
 }
