@@ -4,117 +4,123 @@
 using namespace std;
 
 void selectionSort(int a[], int n);
+void insertionSort(int a[], int n);
 void bubbleSort(int a[], int n);
-void AlgorithmMode(int algoMode);
-void displayMenu();
-int main()
+void heapSort(int a[], int n);
+void mergeSort(int a[], int n);
+void quickSort(int a[], int n);
+void shakerSort(int a[], int n);
+void shellSort(int a[], int n);
+void CountingSort(int a[], int n);
+void radixSort(int a[], int n);
+void flashSort(int a[], int n);
+void readCommands(string cmd);
+void AlgorithmMode();
+void ComparisionMode();
+int main(int argc, char *argv[])
 {
-    displayMenu();
+    string algorithm, input_file, input_order, output_params;
+    int input_size;
+    // Algorithm Mode
+    if (argc < 5)
+        cout << "[ERROR]: NO COMMAND FOUND!";
+    // Command 1
+    if (string(argv[1]) == "-a")
+    {
+        if (argc == 5)
+        {
+            algorithm = argv[2];
+            input_file = argv[3];
+            output_params = argv[4];
+        }
+        // Command 2
+        else if (argc == 6)
+        {
+            algorithm = argv[2];
+            input_size = atoi(argv[3]);
+            input_order = argv[4];
+            output_params = argv[5];
+        }
+        // Command 3
+        else if (argc == 5 && isdigit(atoi(argv[4])))
+        {
+            algorithm = argv[2];
+            input_size = atoi(argv[3]);
+            output_params = argv[4];
+        }
+        else
+        {
+            cout << "[ERROR]: COMMAND NOT FOUND!";
+            exit(1);
+        }
+    }
+    // Comparison Mode
+    string algorithm1, algorithm2;
+    if (string(argv[1]) == "-c")
+    {
+        // Command 4
+        if (argc == 5)
+        {
+
+            algorithm1 = argv[2];
+            algorithm2 = argv[3];
+            input_file = argv[4];
+        }
+        // Command 5
+        else if (argc == 6)
+        {
+            algorithm1 = argv[2];
+            algorithm2 = argv[3];
+            input_size = atoi(argv[4]);
+            input_order = argv[5];
+        }
+        else
+        {
+            cout << "[ERROR]: COMMAND NOT FOUND!";
+            exit(1);
+        }
+    }
     return 0;
 }
-void displayMenu()
+void readCommands(string cmd)
 {
-    int option, algoMode;
-    string input_file, input_order;
-    cout << "\t\t===============================\n";
-    cout << "\t\t|       SORTING PROGRAM       |\n";
-    cout << "\t\t===============================\n";
-    cout << "\t\t|1. Sorting Algorithm         |\n";
-    cout << "\t\t|2. Input file                |\n";
-    cout << "\t\t|3. Input size                |\n";
-    cout << "\t\t|4. Input order               |\n";
-    cout << "\t\t|0. Exit                      |\n";
-    cout << "\t\t===============================\n";
-    int input_size;
-    cout << "\t\tOption: ";
-    cin >> option;
-    switch (option)
-    {
-    case 1:
-        AlgorithmMode(algoMode);
-        break;
-    case 2:
-        break;
-    case 3:
-        break;
-    case 4:
-        break;
-    case 0:
-        cout << "\t\tExit successful!\n";
-        exit(1);
-        break;
-    }
 }
-void AlgorithmMode(int algoMode)
+void AlgorithmMode()
 {
-    cout << '\n';
-    cout << "\t\t================================\n";
-    cout << "\t\t|        TNT-B klasjdlkjdjas kljasdljk        |\n";
-    cout << "\t\t================================\n";
-    cout << "\t\t|1.  Selection Sort            |\n";
-    cout << "\t\t|2.  Insertion Sort            |\n";
-    cout << "\t\t|3.  Bubble Sort               |\n";
-    cout << "\t\t|4.  Shaker Sort               |\n";
-    cout << "\t\t|5.  Shell Sort                |\n";
-    cout << "\t\t|6.  Heap Sort                 |\n";
-    cout << "\t\t|7.  Merge Sort                |\n";
-    cout << "\t\t|8.  Quick Sort                |\n";
-    cout << "\t\t|9.  Counting Sort             |\n";
-    cout << "\t\t|10. Radix Sort                |\n";
-    cout << "\t\t|11. Flash Sort                |\n";
-    cout << "\t\t================================\n";
-    cout << "\t\tChoose your algorithm: ";
-    cin >> algoMode;
-    int a[] = {5, 3, 4, 2, 6, 1};
-    int n = 5;
-    switch (algoMode)
-    {
-    case 1:
-        selectionSort(a, n);
-        break;
-    case 2:
-        break;
-    case 3:
-        bubbleSort(a, n);
-        break;
-    case 4:
-        break;
-    case 5:
-        break;
-    case 6:
-        break;
-    case 7:
-        break;
-    case 8:
-        break;
-    case 9:
-        break;
-    case 10:
-        break;
-    case 11:
-        break;
-    }
+}
+void ComparisionMode()
+{
 }
 void selectionSort(int a[], int n)
 {
-    for (int i = 0; i < n - 1; i++) {
-        int min_idx = i; 
-        for (int j = i + 1; j < n; j++)
-            if (a[j] < a[min_idx])
-                min_idx = j;
-        swap(a[min_idx], a[i]);
-    }
-    cout << "\t\tOUTPUT: ";
-    for (int i = 0; i < n; i++)
-        cout << a[i] << " ";
+}
+void insertionSort(int a[], int n)
+{
 }
 void bubbleSort(int a[], int n)
 {
-    for (int i = 1; i < n; i++)
-        for (int j = n - 1; j >= i; j--)
-            if (a[j] < a[j - 1])
-                swap(a[j], a[j - 1]);
-    cout << "\t\tOUTPUT: ";
-    for (int i = 0; i < n; i++)
-        cout << a[i] << " ";
+}
+void heapSort(int a[], int n)
+{
+}
+void mergeSort(int a[], int n)
+{
+}
+void quickSort(int a[], int n)
+{
+}
+void shakerSort(int a[], int n)
+{
+}
+void shellSort(int a[], int n)
+{
+}
+void CountingSort(int a[], int n)
+{
+}
+void radixSort(int a[], int n)
+{
+}
+void flashSort(int a[], int n)
+{
 }
