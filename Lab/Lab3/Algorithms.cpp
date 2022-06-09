@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 
+void selectionSort(int a[], int n);
 void bubbleSort(int a[], int n);
 void AlgorithmMode(int algoMode);
 void displayMenu();
@@ -69,6 +70,7 @@ void AlgorithmMode(int algoMode)
     switch (algoMode)
     {
     case 1:
+        selectionSort(a, n);
         break;
     case 2:
         break;
@@ -92,6 +94,19 @@ void AlgorithmMode(int algoMode)
     case 11:
         break;
     }
+}
+void selectionSort(int a[], int n)
+{
+    for (int i = 0; i < n - 1; i++) {
+        int min_idx = i; 
+        for (int j = i + 1; j < n; j++)
+            if (a[j] < a[min_idx])
+                min_idx = j;
+        swap(a[min_idx], a[i]);
+    }
+    cout << "\t\tOUTPUT: ";
+    for (int i = 0; i < n; i++)
+        cout << a[i] << " ";
 }
 void bubbleSort(int a[], int n)
 {
