@@ -49,7 +49,7 @@ void AlgorithmMode(int algoMode)
 {
     cout << '\n';
     cout << "\t\t================================\n";
-    cout << "\t\t|        ALGORITHM MODE        |\n";
+    cout << "\t\t|        TNT-B        |\n";
     cout << "\t\t================================\n";
     cout << "\t\t|1.  Selection Sort            |\n";
     cout << "\t\t|2.  Insertion Sort            |\n";
