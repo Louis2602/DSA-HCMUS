@@ -6,17 +6,17 @@
 using namespace std;
 using namespace std::chrono;
 
-void selectionSort(int a[], int n);
-void insertionSort(int a[], int n);
-void bubbleSort(int a[], int n, string params);
-void heapSort(int a[], int n, string params);
-void mergeSort(int a[], int l, int r);
-void quickSort(int a[], int low, int high);
-void shakerSort(int a[], int n);
-void shellSort(int a[], int n);
-void CountingSort(int a[], int n);
-void radixSort(int a[], int n);
-void flashSort(int a[], int n);
+void selectionSort(int *a, int n);
+void insertionSort(int *a, int n);
+void bubbleSort(int *a, int n, string params);
+void heapSort(int *a, int n, string params);
+void mergeSort(int *a, int l, int r);
+void quickSort(int *a, int low, int high);
+void shakerSort(int *a, int n);
+void shellSort(int *a, int n);
+void CountingSort(int *a, int n);
+void radixSort(int *a, int n);
+void flashSort(int *a, int n);
 void executeCommand1(string, string, string);
 void executeCommand2(string, string, string);
 void executeCommand3(string, string, string);
@@ -95,11 +95,8 @@ void readFile(string input_file, int *&a, int &n)
     int i = 0;
     fi >> n;
     a = new int[n];
-    while (!fi.eof())
-    {
+    for (int i = 0; i < n; i++)
         fi >> a[i];
-        i++;
-    }
     fi.close();
 }
 void writeFile(string output_file, int *a, int n)
@@ -111,14 +108,14 @@ void writeFile(string output_file, int *a, int n)
 }
 void executeCommand1(string algorithm, string input_file, string output_params)
 {
-    int *array_input;
-    int n;
+    int *array_input, n;
     cout << "============================\n";
     cout << "|      ALGORITHM MODE      |\n";
     cout << "============================\n";
     cout << "Algorithm: " << algorithm << "\n";
 
     readFile(input_file, array_input, n);
+
     if (algorithm == "bubble-sort")
         bubbleSort(array_input, n, output_params);
     else if (algorithm == "heap-sort")
@@ -173,7 +170,10 @@ void insertionSort(int a[], int n)
 void bubbleSort(int a[], int n, string params)
 {
     auto start = high_resolution_clock::now();
-    // Tự viết code bubble sort
+    for (int i = 1; i < n; i++)
+        for (int j = n - 1; j >= i; j--)
+            if (a[j] < a[j - 1])
+                swap(a[j], a[j - 1]);
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start) / 1e6;
     if (params == "-time")
@@ -188,7 +188,7 @@ void bubbleSort(int a[], int n, string params)
     writeFile("output.txt", a, n);
 }
 // HEAP SORT
-void heapRebuild(int a[], int n, int i)
+void heapRebuild(int *a, int n, int i)
 {
     int largest = i;   // Initialize largest as root
     int l = 2 * i + 1; // left = 2*i + 1
@@ -206,7 +206,7 @@ void heapRebuild(int a[], int n, int i)
         heapRebuild(a, n, largest);
     }
 }
-void heapSort(int a[], int n, string params)
+void heapSort(int *a, int n, string params)
 {
     auto start = high_resolution_clock::now();
     // Build heap (rearrange array)
@@ -231,7 +231,7 @@ void heapSort(int a[], int n, string params)
     writeFile("output.txt", a, n);
 }
 // MERGE SORT
-void merge(int arr[], int low, int high, int mid)
+void merge(int *a, int low, int high, int mid)
 {
     int i, j, k;
     int *c = new int[high + 1];
@@ -240,35 +240,35 @@ void merge(int arr[], int low, int high, int mid)
     j = mid + 1;
     while (i <= mid && j <= high)
     {
-        if (arr[i] < arr[j])
+        if (a[i] < a[j])
         {
-            c[k] = arr[i];
+            c[k] = a[i];
             k++;
             i++;
         }
         else
         {
-            c[k] = arr[j];
+            c[k] = a[j];
             k++;
             j++;
         }
     }
     while (i <= mid)
     {
-        c[k] = arr[i];
+        c[k] = a[i];
         k++;
         i++;
     }
     while (j <= high)
     {
-        c[k] = arr[j];
+        c[k] = a[j];
         k++;
         j++;
     }
     for (i = low; i < k; i++)
-        arr[i] = c[i];
+        a[i] = c[i];
 }
-void mergeSort(int a[], int l, int r)
+void mergeSort(int *a, int l, int r)
 {
     if (l < r)
     {
@@ -279,7 +279,7 @@ void mergeSort(int a[], int l, int r)
     }
 }
 // QUICK SORT
-int partition(int a[], int l, int r)
+int partition(int *a, int l, int r)
 {
     int pivot = a[l];
     int i = l + 1;
@@ -300,9 +300,8 @@ int partition(int a[], int l, int r)
     swap(a[l], a[j]);
     return j;
 }
-void quickSort(int a[], int low, int high)
+void quickSort(int *a, int low, int high)
 {
-    int n = high + 1;
     if (low < high)
     {
         int k = partition(a, low, high);
