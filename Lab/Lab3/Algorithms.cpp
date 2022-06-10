@@ -1,12 +1,15 @@
 #include <iostream>
 #include <fstream>
+#include <chrono>
 #include "DataGenerator.cpp"
+
 using namespace std;
+using namespace std::chrono;
 
 void selectionSort(int a[], int n);
 void insertionSort(int a[], int n);
 void bubbleSort(int a[], int n, string params);
-void heapSort(int a[], int n);
+void heapSort(int a[], int n, string params);
 void mergeSort(int a[], int n);
 void quickSort(int a[], int n);
 void shakerSort(int a[], int n);
@@ -15,10 +18,10 @@ void CountingSort(int a[], int n);
 void radixSort(int a[], int n);
 void flashSort(int a[], int n);
 void executeCommand1(string, string, string);
-void executeCommand2();
-void executeCommand3();
-void executeCommand4();
-void executeCommand5();
+void executeCommand2(string, string, string);
+void executeCommand3(string, string, string);
+void executeCommand4(string, string, string);
+void executeCommand5(string, string, string);
 void AlgorithmMode();
 void ComparisionMode();
 int main(int argc, char *argv[])
@@ -26,7 +29,7 @@ int main(int argc, char *argv[])
     string algorithm, input_file, input_size, input_order, output_params;
     // Algorithm Mode
     if (argc < 5)
-        cout << "[ERROR]: NO COMMAND FOUND!";
+        cout << "[ERROR]: COMMAND NOT FOUND!";
     if (string(argv[1]) == "-a")
     {
         // Command 1
@@ -99,13 +102,27 @@ void readFile(string input_file, int *&a, int &n)
     }
     fi.close();
 }
+void writeFile(string output_file, int *a, int n)
+{
+    ofstream fo(output_file);
+    for (int i = 0; i < n; i++)
+        fo << a[i] << " ";
+    fo.close();
+}
 void executeCommand1(string algorithm, string input_file, string output_params)
 {
     int *array_input;
     int n;
+    cout << "============================\n";
+    cout << "|      ALGORITHM MODE      |\n";
+    cout << "============================\n";
+    cout << "Algorithm: " << algorithm << "\n";
+
     readFile(input_file, array_input, n);
     if (algorithm == "bubble-sort")
         bubbleSort(array_input, n, output_params);
+    else if (algorithm == "heap-sort")
+        heapSort(array_input, n, output_params);
 }
 void AlgorithmMode()
 {
@@ -121,26 +138,65 @@ void insertionSort(int a[], int n)
 }
 void bubbleSort(int a[], int n, string params)
 {
-    if (params == "-asc")
+    auto start = high_resolution_clock::now();
+    // Tự viết code bubble sort
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start) / 1e6;
+    if (params == "-time")
+        cout << "Running time: " << duration.count() << " seconds" << '\n';
+    if (params == "-comp")
+        cout << "Comparisons: " << '\n';
+    else
     {
-        for (int i = 1; i < n; i++)
-            for (int j = n - 1; j >= i; j--)
-                if (a[j] < a[j - 1])
-                    swap(a[j], a[j - 1]);
+        cout << "Running time: " << duration.count() << " seconds" << '\n';
+        cout << "Comparisons: " << '\n';
     }
-    if (params == "-des")
-    {
-        for (int i = 1; i < n; i++)
-            for (int j = n - 1; j >= i; j--)
-                if (a[j] > a[j - 1])
-                    swap(a[j], a[j - 1]);
-    }
-    for (int i = 0; i < n; i++)
-        cout << a[i] << " ";
+    writeFile("output.txt", a, n);
 }
-void heapSort(int a[], int n)
+// HEAP SORT
+void heapRebuild(int a[], int n, int i)
 {
+    int largest = i;   // Initialize largest as root
+    int l = 2 * i + 1; // left = 2*i + 1
+    int r = 2 * i + 2; // right = 2*i + 2
+    // If left child is larger than root
+    if (l < n && a[l] > a[largest])
+        largest = l;
+    // If right child is larger than largest so far
+    if (r < n && a[r] > a[largest])
+        largest = r;
+    // If largest is not root
+    if (largest != i)
+    {
+        swap(a[i], a[largest]);
+        heapRebuild(a, n, largest);
+    }
 }
+void heapSort(int a[], int n, string params)
+{
+    auto start = high_resolution_clock::now();
+    // Build heap (rearrange array)
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapRebuild(a, n, i);
+    for (int i = n - 1; i > 0; i--)
+    {
+        swap(a[0], a[i]);
+        heapRebuild(a, i, 0);
+    }
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start) / 1e6;
+    if (params == "-time")
+        cout << "Running time: " << duration.count() << " seconds" << '\n';
+    if (params == "-comp")
+        cout << "Comparisons: " << '\n';
+    else
+    {
+        cout << "Running time: " << duration.count() << " seconds" << '\n';
+        cout << "Comparisons: " << '\n';
+    }
+    writeFile("output.txt", a, n);
+}
+
 void mergeSort(int a[], int n)
 {
 }
