@@ -10,8 +10,8 @@ void selectionSort(int a[], int n);
 void insertionSort(int a[], int n);
 void bubbleSort(int a[], int n, string params);
 void heapSort(int a[], int n, string params);
-void mergeSort(int a[], int n);
-void quickSort(int a[], int low, int high, string params);
+void mergeSort(int a[], int l, int r);
+void quickSort(int a[], int low, int high);
 void shakerSort(int a[], int n);
 void shellSort(int a[], int n);
 void CountingSort(int a[], int n);
@@ -126,7 +126,24 @@ void executeCommand1(string algorithm, string input_file, string output_params)
     else if (algorithm == "quick-sort")
     {
         auto start = high_resolution_clock::now();
-        quickSort(array_input, 0, n - 1, output_params);
+        quickSort(array_input, 0, n - 1);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e6;
+        if (output_params == "-time")
+            cout << "Running time: " << duration.count() << " seconds" << '\n';
+        else if (output_params == "-comp")
+            cout << "Comparisons: " << '\n';
+        else
+        {
+            cout << "Running time: " << duration.count() << " seconds" << '\n';
+            cout << "Comparisons: " << '\n';
+        }
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "merge-sort")
+    {
+        auto start = high_resolution_clock::now();
+        mergeSort(array_input, 0, n - 1);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         if (output_params == "-time")
@@ -213,10 +230,55 @@ void heapSort(int a[], int n, string params)
     }
     writeFile("output.txt", a, n);
 }
-
-void mergeSort(int a[], int n)
+// MERGE SORT
+void merge(int arr[], int low, int high, int mid)
 {
+    int i, j, k;
+    int *c = new int[high + 1];
+    i = low;
+    k = low;
+    j = mid + 1;
+    while (i <= mid && j <= high)
+    {
+        if (arr[i] < arr[j])
+        {
+            c[k] = arr[i];
+            k++;
+            i++;
+        }
+        else
+        {
+            c[k] = arr[j];
+            k++;
+            j++;
+        }
+    }
+    while (i <= mid)
+    {
+        c[k] = arr[i];
+        k++;
+        i++;
+    }
+    while (j <= high)
+    {
+        c[k] = arr[j];
+        k++;
+        j++;
+    }
+    for (i = low; i < k; i++)
+        arr[i] = c[i];
 }
+void mergeSort(int a[], int l, int r)
+{
+    if (l < r)
+    {
+        int m = (l + r) / 2;
+        mergeSort(a, l, m);
+        mergeSort(a, m + 1, r);
+        merge(a, l, r, m);
+    }
+}
+// QUICK SORT
 int partition(int a[], int l, int r)
 {
     int pivot = a[l];
@@ -238,14 +300,14 @@ int partition(int a[], int l, int r)
     swap(a[l], a[j]);
     return j;
 }
-void quickSort(int a[], int low, int high, string params)
+void quickSort(int a[], int low, int high)
 {
     int n = high + 1;
     if (low < high)
     {
         int k = partition(a, low, high);
-        quickSort(a, low, k - 1, params);
-        quickSort(a, k + 1, high, params);
+        quickSort(a, low, k - 1);
+        quickSort(a, k + 1, high);
     }
 }
 
