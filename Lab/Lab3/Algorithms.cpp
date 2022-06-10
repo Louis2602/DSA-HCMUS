@@ -11,7 +11,7 @@ void insertionSort(int a[], int n);
 void bubbleSort(int a[], int n, string params);
 void heapSort(int a[], int n, string params);
 void mergeSort(int a[], int n);
-void quickSort(int a[], int n);
+void quickSort(int a[], int low, int high, string params);
 void shakerSort(int a[], int n);
 void shellSort(int a[], int n);
 void CountingSort(int a[], int n);
@@ -123,6 +123,23 @@ void executeCommand1(string algorithm, string input_file, string output_params)
         bubbleSort(array_input, n, output_params);
     else if (algorithm == "heap-sort")
         heapSort(array_input, n, output_params);
+    else if (algorithm == "quick-sort")
+    {
+        auto start = high_resolution_clock::now();
+        quickSort(array_input, 0, n - 1, output_params);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e6;
+        if (output_params == "-time")
+            cout << "Running time: " << duration.count() << " seconds" << '\n';
+        else if (output_params == "-comp")
+            cout << "Comparisons: " << '\n';
+        else
+        {
+            cout << "Running time: " << duration.count() << " seconds" << '\n';
+            cout << "Comparisons: " << '\n';
+        }
+        writeFile("output.txt", array_input, n);
+    }
 }
 void AlgorithmMode()
 {
@@ -144,7 +161,7 @@ void bubbleSort(int a[], int n, string params)
     auto duration = duration_cast<microseconds>(stop - start) / 1e6;
     if (params == "-time")
         cout << "Running time: " << duration.count() << " seconds" << '\n';
-    if (params == "-comp")
+    else if (params == "-comp")
         cout << "Comparisons: " << '\n';
     else
     {
@@ -187,7 +204,7 @@ void heapSort(int a[], int n, string params)
     auto duration = duration_cast<microseconds>(stop - start) / 1e6;
     if (params == "-time")
         cout << "Running time: " << duration.count() << " seconds" << '\n';
-    if (params == "-comp")
+    else if (params == "-comp")
         cout << "Comparisons: " << '\n';
     else
     {
@@ -200,9 +217,38 @@ void heapSort(int a[], int n, string params)
 void mergeSort(int a[], int n)
 {
 }
-void quickSort(int a[], int n)
+int partition(int a[], int l, int r)
 {
+    int pivot = a[l];
+    int i = l + 1;
+    int j = r;
+    while (i <= j)
+    {
+        while (i <= j && a[i] < pivot)
+            i++;
+        while (i <= j && a[j] > pivot)
+            j--;
+        if (i < j)
+        {
+            swap(a[i], a[j]);
+            i++;
+            j--;
+        }
+    }
+    swap(a[l], a[j]);
+    return j;
 }
+void quickSort(int a[], int low, int high, string params)
+{
+    int n = high + 1;
+    if (low < high)
+    {
+        int k = partition(a, low, high);
+        quickSort(a, low, k - 1, params);
+        quickSort(a, k + 1, high, params);
+    }
+}
+
 void shakerSort(int a[], int n)
 {
 }
