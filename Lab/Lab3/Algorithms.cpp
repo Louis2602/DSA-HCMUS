@@ -1,15 +1,17 @@
 #include "DataGenerator.cpp"
-#include "Sorts.h"
+#include "Sorts.cpp"
 
 void executeCommand1(string, string, string);
-void executeCommand2(string, string, string);
+void executeCommand2(string, int, string, string);
 void executeCommand3(string, string, string);
 void executeCommand4(string, string, string);
 void executeCommand5(string, string, string);
-void OutputParams(string output_params, double runtime);
+void OutputParams(string, double);
+void AlgorithmMode(string, int[], int, string, string, string, int);
 int main(int argc, char *argv[])
 {
-    string algorithm, input_file, input_size, input_order, output_params;
+    string algorithm, input_file, input_order, output_params, n;
+    int input_size;
     // Algorithm Mode
     if (argc < 5)
         cout << "[ERROR]: COMMAND NOT FOUND!";
@@ -27,15 +29,20 @@ int main(int argc, char *argv[])
         else if (argc == 6)
         {
             algorithm = argv[2];
-            input_size = argv[3];
+            n = argv[3];
+            stringstream ss(n);
+            ss >> input_size;
             input_order = argv[4];
             output_params = argv[5];
+            executeCommand2(algorithm, input_size, input_order, output_params);
         }
         // Command 3
-        else if (argc == 5 && isdigit(atoi(argv[4])))
+        else if (argc == 5 && isdigit(stoi(argv[3])))
         {
             algorithm = argv[2];
-            input_size = argv[3];
+            n = argv[3];
+            stringstream ss(n);
+            ss >> input_size;
             output_params = argv[4];
         }
         else
@@ -61,7 +68,9 @@ int main(int argc, char *argv[])
         {
             algorithm1 = argv[2];
             algorithm2 = argv[3];
-            input_size = argv[4];
+            n = argv[4];
+            stringstream ss(n);
+            ss >> input_size;
             input_order = argv[5];
         }
         else
@@ -72,19 +81,20 @@ int main(int argc, char *argv[])
     }
     return 0;
 }
-void readFile(string input_file, int *&a, int &n)
+void readFile(string input_file, int *&array_input, int &n)
 {
     ifstream fi(input_file);
     int i = 0;
     fi >> n;
-    a = new int[n];
+    array_input = new int[n];
     for (int i = 0; i < n; i++)
-        fi >> a[i];
+        fi >> array_input[i];
     fi.close();
 }
 void writeFile(string output_file, int *a, int n)
 {
     ofstream fo(output_file);
+    fo << n << '\n';
     for (int i = 0; i < n; i++)
         fo << a[i] << " ";
     fo.close();
@@ -92,17 +102,82 @@ void writeFile(string output_file, int *a, int n)
 void executeCommand1(string algorithm, string input_file, string output_params)
 {
     int *array_input, n;
+    readFile(input_file, array_input, n);
+    AlgorithmMode(algorithm, array_input, n, output_params, "", input_file, 1);
+    delete[] array_input;
+}
+
+void executeCommand2(string algorithm, int input_size, string input_order, string output_params)
+{
+    int *array_input = new int[input_size];
+    if (input_order == "-rand")
+    {
+        GenerateData(array_input, input_size, 0);
+        writeFile("input.txt", array_input, input_size);
+    }
+    else if (input_order == "-sorted")
+    {
+        GenerateData(array_input, input_size, 1);
+        writeFile("input.txt", array_input, input_size);
+    }
+    else if (input_order == "-rev")
+    {
+        GenerateData(array_input, input_size, 2);
+        writeFile("input.txt", array_input, input_size);
+    }
+    else if (input_order == "-nsorted")
+    {
+        GenerateData(array_input, input_size, 3);
+        writeFile("input.txt", array_input, input_size);
+    }
+    else
+    {
+        cout << "[ERROR]: INPUT ORDER WRONG (-rand, -sorted, -rev, -nsorted)!";
+        exit(1);
+    }
+    readFile("input.txt", array_input, input_size);
+    AlgorithmMode(algorithm, array_input, input_size, output_params, input_order, "input.txt", 2);
+}
+void OutputParams(string output_params, double runtime)
+{
+    if (output_params == "-time")
+        cout << "-----------------------------\nRunning time: " << runtime << " seconds" << '\n';
+    else if (output_params == "-comp")
+        cout << "Comparisons: " << '\n';
+    else
+    {
+        cout << "-----------------------------\nRunning time: " << runtime << " seconds" << '\n';
+        cout << "Comparisons: " << '\n';
+    }
+}
+void AlgorithmMode(string algorithm, int array_input[], int n, string output_params, string input_order, string input_file, int cmd)
+{
     cout << "============================\n";
     cout << "|      ALGORITHM MODE      |\n";
     cout << "============================\n";
     cout << "Algorithm: " << algorithm << "\n";
-
-    readFile(input_file, array_input, n);
+    switch (cmd)
+    {
+    case 1:
+        cout << "Input file: " << input_file << '\n';
+        cout << "Input size: " << n << '\n';
+        break;
+    case 2:
+        cout << "Input size: " << n << '\n';
+        cout << "Input order: " << input_order << '\n';
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+    case 5:
+        break;
+    }
     double runtime;
     if (algorithm == "bubble-sort")
     {
         auto start = high_resolution_clock::now();
-        bubbleSort(array_input, n, output_params);
+        bubbleSort(array_input, n);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
@@ -112,7 +187,7 @@ void executeCommand1(string algorithm, string input_file, string output_params)
     else if (algorithm == "heap-sort")
     {
         auto start = high_resolution_clock::now();
-        heapSort(array_input, n, output_params);
+        heapSort(array_input, n);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
@@ -138,18 +213,5 @@ void executeCommand1(string algorithm, string input_file, string output_params)
         double runtime = duration.count();
         OutputParams(output_params, runtime);
         writeFile("output.txt", array_input, n);
-    }
-}
-
-void OutputParams(string output_params, double runtime)
-{
-    if (output_params == "-time")
-        cout << "Running time: " << runtime << " seconds" << '\n';
-    else if (output_params == "-comp")
-        cout << "Comparisons: " << '\n';
-    else
-    {
-        cout << "Running time: " << runtime << " seconds" << '\n';
-        cout << "Comparisons: " << '\n';
     }
 }

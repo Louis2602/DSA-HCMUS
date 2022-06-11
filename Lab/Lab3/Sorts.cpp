@@ -1,38 +1,28 @@
 #pragma once
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <chrono>
 
 using namespace std;
 using namespace std::chrono;
 
+template <class T>
 void selectionSort(int a[], int n)
 {
 }
 void insertionSort(int a[], int n)
 {
 }
-void bubbleSort(int a[], int n, string params)
+void bubbleSort(int a[], int n)
 {
-    auto start = high_resolution_clock::now();
     for (int i = 1; i < n; i++)
         for (int j = n - 1; j >= i; j--)
             if (a[j] < a[j - 1])
                 swap(a[j], a[j - 1]);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start) / 1e6;
-    if (params == "-time")
-        cout << "Running time: " << duration.count() << " seconds" << '\n';
-    else if (params == "-comp")
-        cout << "Comparisons: " << '\n';
-    else
-    {
-        cout << "Running time: " << duration.count() << " seconds" << '\n';
-        cout << "Comparisons: " << '\n';
-    }
 }
 // HEAP SORT
-void heapRebuild(int *a, int n, int i)
+void heapRebuild(int a[], int n, int i)
 {
     int largest = i;   // Initialize largest as root
     int l = 2 * i + 1; // left = 2*i + 1
@@ -50,9 +40,8 @@ void heapRebuild(int *a, int n, int i)
         heapRebuild(a, n, largest);
     }
 }
-void heapSort(int *a, int n, string params)
+void heapSort(int a[], int n)
 {
-    auto start = high_resolution_clock::now();
     // Build heap (rearrange array)
     for (int i = n / 2 - 1; i >= 0; i--)
         heapRebuild(a, n, i);
@@ -61,23 +50,12 @@ void heapSort(int *a, int n, string params)
         swap(a[0], a[i]);
         heapRebuild(a, i, 0);
     }
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start) / 1e6;
-    if (params == "-time")
-        cout << "Running time: " << duration.count() << " seconds" << '\n';
-    else if (params == "-comp")
-        cout << "Comparisons: " << '\n';
-    else
-    {
-        cout << "Running time: " << duration.count() << " seconds" << '\n';
-        cout << "Comparisons: " << '\n';
-    }
 }
 // MERGE SORT
-void merge(int *a, int low, int high, int mid)
+void merge(int a[], int low, int high, int mid)
 {
     int i, j, k;
-    int *c = new int[high + 1];
+    int *c = new int[1000000];
     i = low;
     k = low;
     j = mid + 1;
@@ -110,8 +88,9 @@ void merge(int *a, int low, int high, int mid)
     }
     for (i = low; i < k; i++)
         a[i] = c[i];
+    delete[] c;
 }
-void mergeSort(int *a, int l, int r)
+void mergeSort(int a[], int l, int r)
 {
     if (l < r)
     {
@@ -122,7 +101,7 @@ void mergeSort(int *a, int l, int r)
     }
 }
 // QUICK SORT
-int partition(int *a, int l, int r)
+int partition(int a[], int l, int r)
 {
     int pivot = a[l];
     int i = l + 1;
@@ -143,7 +122,7 @@ int partition(int *a, int l, int r)
     swap(a[l], a[j]);
     return j;
 }
-void quickSort(int *a, int low, int high)
+void quickSort(int a[], int low, int high)
 {
     if (low < high)
     {
