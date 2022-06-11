@@ -5,9 +5,11 @@ void executeCommand1(string, string, string);
 void executeCommand2(string, int, string, string);
 void executeCommand3(string, int, string);
 void executeCommand4(string, string, string);
-void executeCommand5(string, string, string);
+void executeCommand5(string, string, int, string);
 void OutputParams(string, double);
+double runTime(int[], int, string);
 void AlgorithmMode(string, int[], int, string, string, string, int);
+void ComparisonMode(string, string, int[], int, string, string, int);
 int main(int argc, char *argv[])
 {
     string algorithm, input_file, input_order, output_params, n;
@@ -17,16 +19,26 @@ int main(int argc, char *argv[])
         cout << "[ERROR]: COMMAND NOT FOUND!";
     if (string(argv[1]) == "-a")
     {
-        // Command 1
         n = argv[3];
         stringstream ss(n);
         ss >> input_size;
-        if (argc == 5 && isdigit(input_size))
+        if (argc == 5)
         {
-            algorithm = argv[2];
-            input_file = argv[3];
-            output_params = argv[4];
-            executeCommand1(algorithm, input_file, output_params);
+            // Command 1
+            if (!input_size)
+            {
+                algorithm = argv[2];
+                input_file = argv[3];
+                output_params = argv[4];
+                executeCommand1(algorithm, input_file, output_params);
+            }
+            // Command 3
+            else
+            {
+                algorithm = argv[2];
+                output_params = argv[4];
+                executeCommand3(algorithm, input_size, output_params);
+            }
         }
         // Command 2
         else if (argc == 6)
@@ -38,13 +50,6 @@ int main(int argc, char *argv[])
             input_order = argv[4];
             output_params = argv[5];
             executeCommand2(algorithm, input_size, input_order, output_params);
-        }
-        // Command 3
-        else if (argc == 5)
-        {
-            algorithm = argv[2];
-            output_params = argv[4];
-            executeCommand3(algorithm, input_size, output_params);
         }
         else
         {
@@ -63,6 +68,7 @@ int main(int argc, char *argv[])
             algorithm1 = argv[2];
             algorithm2 = argv[3];
             input_file = argv[4];
+            executeCommand4(algorithm1, algorithm2, input_file);
         }
         // Command 5
         else if (argc == 6)
@@ -73,6 +79,7 @@ int main(int argc, char *argv[])
             stringstream ss(n);
             ss >> input_size;
             input_order = argv[5];
+            executeCommand5(algorithm1, algorithm2, input_size, input_order);
         }
         else
         {
@@ -111,9 +118,8 @@ void executeCommand1(string algorithm, string input_file, string output_params)
     AlgorithmMode(algorithm, array_input, n, output_params, "", input_file, 1);
     delete[] array_input;
 }
-void executeCommand2(string algorithm, int input_size, string input_order, string output_params)
+void GenDataCmd2(string input_order, int array_input[], int input_size)
 {
-    int *array_input = new int[input_size];
     if (input_order == "-rand")
     {
         GenerateData(array_input, input_size, 0);
@@ -139,6 +145,11 @@ void executeCommand2(string algorithm, int input_size, string input_order, strin
         cout << "[ERROR]: INPUT ORDER WRONG (-rand, -sorted, -rev, -nsorted)!";
         exit(1);
     }
+}
+void executeCommand2(string algorithm, int input_size, string input_order, string output_params)
+{
+    int *array_input = new int[input_size];
+    GenDataCmd2(input_order, array_input, input_size);
     readFile("input.txt", array_input, input_size);
     cout << "============================\n";
     cout << "|      ALGORITHM MODE      |\n";
@@ -150,7 +161,6 @@ void executeCommand2(string algorithm, int input_size, string input_order, strin
 void executeCommand3(string algorithm, int input_size, string output_params)
 {
     int *array_input = new int[input_size];
-
     // Random order data
     GenerateData(array_input, input_size, 0);
     writeFile("input_1.txt", array_input, input_size);
@@ -178,8 +188,41 @@ void executeCommand3(string algorithm, int input_size, string output_params)
     AlgorithmMode(algorithm, array_input, input_size, output_params, "-sorted", "input_3.txt", 3);
     readFile("input_4.txt", array_input, input_size);
     AlgorithmMode(algorithm, array_input, input_size, output_params, "-rev", "input_4.txt", 3);
+    delete[] array_input;
 }
 
+void executeCommand4(string algorithm1, string algorithm2, string input_file)
+{
+    int *array_input, n;
+    readFile(input_file, array_input, n);
+    cout << "============================\n";
+    cout << "|       COMPARE MODE       |\n";
+    cout << "============================\n";
+    cout << "Algorithm: " << algorithm1 << " | " << algorithm2 << '\n';
+    cout << "Input file: " << input_file << '\n';
+    cout << "Input size: " << n << '\n';
+    ComparisonMode(algorithm1, algorithm2, array_input, n, "", input_file, 4);
+    delete[] array_input;
+}
+void executeCommand5(string algorithm1, string algorithm2, int input_size, string input_order)
+{
+    int *array_input = new int[input_size];
+    cout << "============================\n";
+    cout << "|       COMPARE MODE       |\n";
+    cout << "============================\n";
+    cout << "Algorithm: " << algorithm1 << " | " << algorithm2 << '\n';
+    cout << "Input size: " << input_size << '\n';
+    if (input_order == "-rand")
+        cout << "Input order: Randomize" << '\n';
+    else if (input_order == "-sorted")
+        cout << "Input order: Sorted" << '\n';
+    else if (input_order == "-rev")
+        cout << "Input order: Reversed" << '\n';
+    else if (input_order == "-nsorted")
+        cout << "Input order: Nearly Sorted" << '\n';
+    ComparisonMode(algorithm1, algorithm2, array_input, input_size, input_order, "input.txt", 5);
+    delete[] array_input;
+}
 void OutputParams(string output_params, double runtime)
 {
     if (output_params == "-time")
@@ -216,11 +259,35 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
     case 3:
         cout << "\nInput order: " << input_order << '\n';
         break;
-    case 4:
-        break;
-    case 5:
-        break;
     }
+    double runtime;
+    if (algorithm == "bubble-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "heap-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "quick-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "merge-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime);
+        writeFile("output.txt", array_input, n);
+    }
+}
+double runTime(int array_input[], int n, string algorithm)
+{
     double runtime;
     if (algorithm == "bubble-sort")
     {
@@ -229,8 +296,6 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
-        OutputParams(output_params, runtime);
-        writeFile("output.txt", array_input, n);
     }
     else if (algorithm == "heap-sort")
     {
@@ -239,8 +304,6 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
-        OutputParams(output_params, runtime);
-        writeFile("output.txt", array_input, n);
     }
     else if (algorithm == "quick-sort")
     {
@@ -249,8 +312,6 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
-        OutputParams(output_params, runtime);
-        writeFile("output.txt", array_input, n);
     }
     else if (algorithm == "merge-sort")
     {
@@ -258,8 +319,25 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         mergeSort(array_input, 0, n - 1);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
-        double runtime = duration.count();
-        OutputParams(output_params, runtime);
-        writeFile("output.txt", array_input, n);
+        runtime = duration.count();
     }
+    return runtime;
+}
+void ComparisonMode(string algorithm1, string algorithm2, int array_input[], int n, string input_order, string input_file, int cmd)
+{
+    int comp1 = 0, comp2 = 0;
+    double runtime1, runtime2;
+    if (cmd == 4)
+    {
+        runtime1 = runTime(array_input, n, algorithm1);
+        runtime2 = runTime(array_input, n, algorithm2);
+    }
+    else
+    {
+        GenDataCmd2(input_order, array_input, n);
+        runtime1 = runTime(array_input, n, algorithm1);
+        runtime2 = runTime(array_input, n, algorithm2);
+    }
+    cout << "-----------------------------\nRunning time: " << runtime1 << " seconds | " << runtime2 << " seconds" << '\n';
+    cout << "Comparisons: " << comp1 << " steps | " << comp2 << " steps" << '\n';
 }
