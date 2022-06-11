@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+
 using namespace std;
 
 int partition(int a[], int l, int r)
@@ -39,12 +41,23 @@ void print(int a[], int n)
 }
 int main()
 {
-    int a[] = {12, 11, 13, 5, 6, 3};
-    int n = sizeof(a) / sizeof(a[0]);
-    cout << "Before: ";
-    print(a, n);
-    cout << "After sorting: ";
+    int *a, n;
+    ifstream fi("input.txt");
+    ofstream fo("output.txt");
+    fi >> n;
+    a = new int[n];
+    for(int i=0; i<n; i++)
+        fi >> a[i];
+    cout << n;
+    //cout << "Before: ";
+    //print(a, n);
+    //cout << "After sorting: ";
     quickSort(a, 0, n - 1);
-    print(a, n);
+    for(int i=0; i<n; i++)
+        fo << a[i] << " ";
+    fi.close();
+    fo.close();
+        
+    //print(a, n);
     return 0;
 }
