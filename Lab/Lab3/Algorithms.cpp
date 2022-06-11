@@ -16,7 +16,10 @@ int main(int argc, char *argv[])
     int input_size;
     // Algorithm Mode
     if (argc < 5)
+    {
         cout << "[ERROR]: COMMAND NOT FOUND!";
+        exit(1);
+    }
     if (string(argv[1]) == "-a")
     {
         n = argv[3];
