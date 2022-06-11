@@ -3,7 +3,7 @@
 
 void executeCommand1(string, string, string);
 void executeCommand2(string, int, string, string);
-void executeCommand3(string, string, string);
+void executeCommand3(string, int, string);
 void executeCommand4(string, string, string);
 void executeCommand5(string, string, string);
 void OutputParams(string, double);
@@ -18,7 +18,10 @@ int main(int argc, char *argv[])
     if (string(argv[1]) == "-a")
     {
         // Command 1
-        if (argc == 5)
+        n = argv[3];
+        stringstream ss(n);
+        ss >> input_size;
+        if (argc == 5 && isdigit(input_size))
         {
             algorithm = argv[2];
             input_file = argv[3];
@@ -37,13 +40,11 @@ int main(int argc, char *argv[])
             executeCommand2(algorithm, input_size, input_order, output_params);
         }
         // Command 3
-        else if (argc == 5 && isdigit(stoi(argv[3])))
+        else if (argc == 5)
         {
             algorithm = argv[2];
-            n = argv[3];
-            stringstream ss(n);
-            ss >> input_size;
             output_params = argv[4];
+            executeCommand3(algorithm, input_size, output_params);
         }
         else
         {
@@ -103,10 +104,13 @@ void executeCommand1(string algorithm, string input_file, string output_params)
 {
     int *array_input, n;
     readFile(input_file, array_input, n);
+    cout << "============================\n";
+    cout << "|      ALGORITHM MODE      |\n";
+    cout << "============================\n";
+    cout << "Algorithm: " << algorithm << '\n';
     AlgorithmMode(algorithm, array_input, n, output_params, "", input_file, 1);
     delete[] array_input;
 }
-
 void executeCommand2(string algorithm, int input_size, string input_order, string output_params)
 {
     int *array_input = new int[input_size];
@@ -136,8 +140,46 @@ void executeCommand2(string algorithm, int input_size, string input_order, strin
         exit(1);
     }
     readFile("input.txt", array_input, input_size);
+    cout << "============================\n";
+    cout << "|      ALGORITHM MODE      |\n";
+    cout << "============================\n";
+    cout << "Algorithm: " << algorithm << '\n';
     AlgorithmMode(algorithm, array_input, input_size, output_params, input_order, "input.txt", 2);
 }
+
+void executeCommand3(string algorithm, int input_size, string output_params)
+{
+    int *array_input = new int[input_size];
+
+    // Random order data
+    GenerateData(array_input, input_size, 0);
+    writeFile("input_1.txt", array_input, input_size);
+    // Nearly sorted data
+    GenerateData(array_input, input_size, 3);
+    writeFile("input_2.txt", array_input, input_size);
+    // Sorted data
+    GenerateData(array_input, input_size, 1);
+    writeFile("input_3.txt", array_input, input_size);
+    // Reversed data
+    GenerateData(array_input, input_size, 2);
+    writeFile("input_4.txt", array_input, input_size);
+
+    cout << "============================\n";
+    cout << "|      ALGORITHM MODE      |\n";
+    cout << "============================\n";
+    cout << "Algorithm: " << algorithm << '\n';
+    cout << "Input size: " << input_size << '\n';
+
+    readFile("input_1.txt", array_input, input_size);
+    AlgorithmMode(algorithm, array_input, input_size, output_params, "-rand", "input_1.txt", 3);
+    readFile("input_2.txt", array_input, input_size);
+    AlgorithmMode(algorithm, array_input, input_size, output_params, "-nsorted", "input_2.txt", 3);
+    readFile("input_3.txt", array_input, input_size);
+    AlgorithmMode(algorithm, array_input, input_size, output_params, "-sorted", "input_3.txt", 3);
+    readFile("input_4.txt", array_input, input_size);
+    AlgorithmMode(algorithm, array_input, input_size, output_params, "-rev", "input_4.txt", 3);
+}
+
 void OutputParams(string output_params, double runtime)
 {
     if (output_params == "-time")
@@ -152,10 +194,15 @@ void OutputParams(string output_params, double runtime)
 }
 void AlgorithmMode(string algorithm, int array_input[], int n, string output_params, string input_order, string input_file, int cmd)
 {
-    cout << "============================\n";
-    cout << "|      ALGORITHM MODE      |\n";
-    cout << "============================\n";
-    cout << "Algorithm: " << algorithm << "\n";
+    if (input_order == "-rand")
+        input_order = "Randomize";
+    else if (input_order == "-sorted")
+        input_order = "Sorted";
+    else if (input_order == "-rev")
+        input_order = "Reversed";
+    else if (input_order == "-nsorted")
+        input_order = "Nearly Sorted";
+
     switch (cmd)
     {
     case 1:
@@ -167,6 +214,7 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         cout << "Input order: " << input_order << '\n';
         break;
     case 3:
+        cout << "\nInput order: " << input_order << '\n';
         break;
     case 4:
         break;
