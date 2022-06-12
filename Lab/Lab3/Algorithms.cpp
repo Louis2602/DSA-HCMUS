@@ -7,6 +7,7 @@ void executeCommand3(string, int, string);
 void executeCommand4(string, string, string);
 void executeCommand5(string, string, int, string);
 void OutputParams(string, double);
+int numCompares(int[], int, string);
 double runTime(int[], int, string);
 void AlgorithmMode(string, int[], int, string, string, string, int);
 void ComparisonMode(string, string, int[], int, string, string, int);
@@ -145,7 +146,7 @@ void GenDataCmd2(string input_order, int array_input[], int input_size)
     }
     else
     {
-        cout << "[ERROR]: INPUT ORDER WRONG (-rand, -sorted, -rev, -nsorted)!";
+        cout << "[ERROR]: INVALID INPUT ORDER (-rand, -sorted, -rev, -nsorted)!";
         exit(1);
     }
 }
@@ -223,19 +224,29 @@ void executeCommand5(string algorithm1, string algorithm2, int input_size, strin
         cout << "Input order: Reversed" << '\n';
     else if (input_order == "-nsorted")
         cout << "Input order: Nearly Sorted" << '\n';
+    else
+    {
+        cout << "[ERROR]: INVALID INPUT ORDER (-rand, -sorted, -rev, -nsorted)!";
+        exit(1);
+    }
     ComparisonMode(algorithm1, algorithm2, array_input, input_size, input_order, "input.txt", 5);
     delete[] array_input;
 }
-void OutputParams(string output_params, double runtime)
+void OutputParams(string output_params, double runtime, int comp)
 {
     if (output_params == "-time")
         cout << "-----------------------------\nRunning time: " << runtime << " seconds" << '\n';
     else if (output_params == "-comp")
-        cout << "Comparisons: " << '\n';
-    else
+        cout << "-----------------------------\nComparisons: " << comp << '\n';
+    else if (output_params == "-both")
     {
         cout << "-----------------------------\nRunning time: " << runtime << " seconds" << '\n';
-        cout << "Comparisons: " << '\n';
+        cout << "Comparisons: " << comp << '\n';
+    }
+    else
+    {
+        cout << "[ERROR]: INVALID OUTPUT PARAMS (-time, -comp, -both)!";
+        exit(1);
     }
 }
 void AlgorithmMode(string algorithm, int array_input[], int n, string output_params, string input_order, string input_file, int cmd)
@@ -248,7 +259,7 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         input_order = "Reversed";
     else if (input_order == "-nsorted")
         input_order = "Nearly Sorted";
-
+    int comp = numCompares(array_input, n, algorithm);
     switch (cmd)
     {
     case 1:
@@ -267,27 +278,39 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
     if (algorithm == "bubble-sort")
     {
         runtime = runTime(array_input, n, algorithm);
-        OutputParams(output_params, runtime);
+        OutputParams(output_params, runtime, comp);
         writeFile("output.txt", array_input, n);
     }
     else if (algorithm == "heap-sort")
     {
         runtime = runTime(array_input, n, algorithm);
-        OutputParams(output_params, runtime);
+        OutputParams(output_params, runtime, comp);
         writeFile("output.txt", array_input, n);
     }
     else if (algorithm == "quick-sort")
     {
         runtime = runTime(array_input, n, algorithm);
-        OutputParams(output_params, runtime);
+        OutputParams(output_params, runtime, comp);
         writeFile("output.txt", array_input, n);
     }
     else if (algorithm == "merge-sort")
     {
         runtime = runTime(array_input, n, algorithm);
-        OutputParams(output_params, runtime);
+        OutputParams(output_params, runtime, comp);
         writeFile("output.txt", array_input, n);
     }
+}
+int numCompares(int array_input[], int n, string algorithm)
+{
+    int cnt_compare = 0;
+    if (algorithm == "bubble-sort")
+        Comp_bubbleSort(array_input, n, cnt_compare);
+    else if (algorithm == "heap-sort")
+        Comp_heapSort(array_input, n, cnt_compare);
+    else if (algorithm == "merge-sort")
+        Comp_mergeSort(array_input, 0, n - 1, cnt_compare);
+
+    return cnt_compare;
 }
 double runTime(int array_input[], int n, string algorithm)
 {
@@ -295,7 +318,7 @@ double runTime(int array_input[], int n, string algorithm)
     if (algorithm == "bubble-sort")
     {
         auto start = high_resolution_clock::now();
-        bubbleSort(array_input, n);
+        Algo_bubbleSort(array_input, n);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
@@ -303,7 +326,7 @@ double runTime(int array_input[], int n, string algorithm)
     else if (algorithm == "heap-sort")
     {
         auto start = high_resolution_clock::now();
-        heapSort(array_input, n);
+        Algo_heapSort(array_input, n);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
@@ -319,7 +342,7 @@ double runTime(int array_input[], int n, string algorithm)
     else if (algorithm == "merge-sort")
     {
         auto start = high_resolution_clock::now();
-        mergeSort(array_input, 0, n - 1);
+        Algo_mergeSort(array_input, 0, n - 1);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
@@ -328,16 +351,20 @@ double runTime(int array_input[], int n, string algorithm)
 }
 void ComparisonMode(string algorithm1, string algorithm2, int array_input[], int n, string input_order, string input_file, int cmd)
 {
-    int comp1 = 0, comp2 = 0;
+    int comp1, comp2;
     double runtime1, runtime2;
     if (cmd == 4)
     {
+        comp1 = numCompares(array_input, n, algorithm1);
+        comp2 = numCompares(array_input, n, algorithm2);
         runtime1 = runTime(array_input, n, algorithm1);
         runtime2 = runTime(array_input, n, algorithm2);
     }
     else
     {
         GenDataCmd2(input_order, array_input, n);
+        comp1 = numCompares(array_input, n, algorithm1);
+        comp2 = numCompares(array_input, n, algorithm2);
         runtime1 = runTime(array_input, n, algorithm1);
         runtime2 = runTime(array_input, n, algorithm2);
     }

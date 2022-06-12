@@ -14,15 +14,23 @@ void selectionSort(int a[], int n)
 void insertionSort(int a[], int n)
 {
 }
-void bubbleSort(int a[], int n)
+// BUBBLE SORT
+void Algo_bubbleSort(int a[], int n)
 {
     for (int i = 1; i < n; i++)
         for (int j = n - 1; j >= i; j--)
             if (a[j] < a[j - 1])
                 swap(a[j], a[j - 1]);
 }
+void Comp_bubbleSort(int a[], int n, int &cnt_compare)
+{
+    for (int i = 1; ++cnt_compare && i < n; i++)
+        for (int j = n - 1; ++cnt_compare && j >= i; j--)
+            if (++cnt_compare && a[j] < a[j - 1])
+                swap(a[j], a[j - 1]);
+}
 // HEAP SORT
-void heapRebuild(int a[], int n, int i)
+void Algo_heapRebuild(int a[], int n, int i)
 {
     int largest = i;   // Initialize largest as root
     int l = 2 * i + 1; // left = 2*i + 1
@@ -37,22 +45,51 @@ void heapRebuild(int a[], int n, int i)
     if (largest != i)
     {
         swap(a[i], a[largest]);
-        heapRebuild(a, n, largest);
+        Algo_heapRebuild(a, n, largest);
     }
 }
-void heapSort(int a[], int n)
+void Algo_heapSort(int a[], int n)
 {
     // Build heap (rearrange array)
     for (int i = n / 2 - 1; i >= 0; i--)
-        heapRebuild(a, n, i);
+        Algo_heapRebuild(a, n, i);
     for (int i = n - 1; i > 0; i--)
     {
         swap(a[0], a[i]);
-        heapRebuild(a, i, 0);
+        Algo_heapRebuild(a, i, 0);
+    }
+}
+void Comp_heapRebuild(int a[], int n, int i, int &cnt_compare)
+{
+    int largest = i;   // Initialize largest as root
+    int l = 2 * i + 1; // left = 2*i + 1
+    int r = 2 * i + 2; // right = 2*i + 2
+    // If left child is larger than root
+    if (++cnt_compare && l < n && ++cnt_compare && a[l] > a[largest])
+        largest = l;
+    // If right child is larger than largest so far
+    if (++cnt_compare && r < n && ++cnt_compare && a[r] > a[largest])
+        largest = r;
+    // If largest is not root
+    if (++cnt_compare && largest != i)
+    {
+        swap(a[i], a[largest]);
+        Comp_heapRebuild(a, n, largest, cnt_compare);
+    }
+}
+void Comp_heapSort(int a[], int n, int &cnt_compare)
+{
+    // Build heap (rearrange array)
+    for (int i = n / 2 - 1; ++cnt_compare && i >= 0; i--)
+        Comp_heapRebuild(a, n, i, cnt_compare);
+    for (int i = n - 1; ++cnt_compare && i > 0; i--)
+    {
+        swap(a[0], a[i]);
+        Comp_heapRebuild(a, i, 0, cnt_compare);
     }
 }
 // MERGE SORT
-void merge(int a[], int low, int high, int mid)
+void Algo_merge(int a[], int low, int high, int mid)
 {
     int i, j, k;
     int *c = new int[1000000];
@@ -90,14 +127,62 @@ void merge(int a[], int low, int high, int mid)
         a[i] = c[i];
     delete[] c;
 }
-void mergeSort(int a[], int l, int r)
+void Algo_mergeSort(int a[], int l, int r)
 {
     if (l < r)
     {
         int m = (l + r) / 2;
-        mergeSort(a, l, m);
-        mergeSort(a, m + 1, r);
-        merge(a, l, r, m);
+        Algo_mergeSort(a, l, m);
+        Algo_mergeSort(a, m + 1, r);
+        Algo_merge(a, l, r, m);
+    }
+}
+void Comp_merge(int a[], int low, int high, int mid, int &cnt_compare)
+{
+    int i, j, k;
+    int *c = new int[1000000];
+    i = low;
+    k = low;
+    j = mid + 1;
+    while (++cnt_compare && i <= mid && ++cnt_compare && j <= high)
+    {
+        if (++cnt_compare && a[i] < a[j])
+        {
+            c[k] = a[i];
+            k++;
+            i++;
+        }
+        else
+        {
+            c[k] = a[j];
+            k++;
+            j++;
+        }
+    }
+    while (++cnt_compare && i <= mid)
+    {
+        c[k] = a[i];
+        k++;
+        i++;
+    }
+    while (++cnt_compare && j <= high)
+    {
+        c[k] = a[j];
+        k++;
+        j++;
+    }
+    for (i = low; ++cnt_compare && i < k; i++)
+        a[i] = c[i];
+    delete[] c;
+}
+void Comp_mergeSort(int a[], int l, int r, int &cnt_compare)
+{
+    if (++cnt_compare && l < r)
+    {
+        int m = (l + r) / 2;
+        Comp_mergeSort(a, l, m, cnt_compare);
+        Comp_mergeSort(a, m + 1, r, cnt_compare);
+        Comp_merge(a, l, r, m, cnt_compare);
     }
 }
 // QUICK SORT
