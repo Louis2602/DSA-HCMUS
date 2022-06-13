@@ -5,7 +5,6 @@ int partition(int a[], int l, int r)
 {
     int first = l, last = r;
     int pivot = a[first];
-    cout << first << " " << last << " " << a[first] << endl;
     int last1 = first;
     int first_unknown = first + 1;
     while (first_unknown <= last)
@@ -19,8 +18,7 @@ int partition(int a[], int l, int r)
         else
             first_unknown++;
     }
-    swap(pivot, a[last1]);
-    cout << a[first] << " " << a[last1] << endl;
+    swap(a[first], a[last1]);
     return last1;
 }
 
