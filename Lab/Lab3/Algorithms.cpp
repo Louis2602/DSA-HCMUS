@@ -7,6 +7,8 @@
 #include <iostream>
 #include <chrono>
 
+#define ll long long
+
 using namespace std;
 using namespace std::chrono;
 
@@ -16,7 +18,7 @@ void executeCommand3(string, int, string);
 void executeCommand4(string, string, string);
 void executeCommand5(string, string, int, string);
 void OutputParams(string, double);
-int numCompares(int[], int, string);
+ll numCompares(int[], int, string);
 double runTime(int[], int, string);
 void AlgorithmMode(string, int[], int, string, string, string, int);
 void ComparisonMode(string, string, int[], int, string, string, int);
@@ -244,12 +246,12 @@ void executeCommand5(string algorithm1, string algorithm2, int input_size, strin
 void OutputParams(string output_params, double runtime, int comp)
 {
     if (output_params == "-time")
-        cout << "-----------------------------\nRunning time: " << runtime << " seconds" << '\n';
+        cout << "-----------------------------\nRunning time: " << runtime << " milisecs" << '\n';
     else if (output_params == "-comp")
-        cout << "-----------------------------\nComparisons: " << comp << '\n';
+        cout << "-----------------------------\nComparisons: " << comp << " comps" << '\n';
     else if (output_params == "-both")
     {
-        cout << "-----------------------------\nRunning time: " << runtime << " seconds" << '\n';
+        cout << "-----------------------------\nRunning time: " << runtime << " milisecs" << '\n';
         cout << "Comparisons: " << comp << '\n';
     }
     else
@@ -268,7 +270,7 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         input_order = "Reversed";
     else if (input_order == "-nsorted")
         input_order = "Nearly Sorted";
-    int comp = numCompares(array_input, n, algorithm);
+    ll comp = numCompares(array_input, n, algorithm);
     switch (cmd)
     {
     case 1:
@@ -309,9 +311,9 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         writeFile("output.txt", array_input, n);
     }
 }
-int numCompares(int array_input[], int n, string algorithm)
+ll numCompares(int array_input[], int n, string algorithm)
 {
-    int cnt_compare = 0;
+    ll cnt_compare = 0;
     if (algorithm == "bubble-sort")
         Comp_bubbleSort(array_input, n, cnt_compare);
     else if (algorithm == "heap-sort")
@@ -321,7 +323,7 @@ int numCompares(int array_input[], int n, string algorithm)
     else if (algorithm == "quick-sort")
         Comp_quickSort(array_input, 0, n - 1, cnt_compare);
 
-    return cnt_compare;
+    return (ll)cnt_compare;
 }
 double runTime(int array_input[], int n, string algorithm)
 {
@@ -331,7 +333,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_bubbleSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(stop - start) / 1e6;
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "heap-sort")
@@ -339,7 +341,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_heapSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(stop - start) / 1e6;
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "quick-sort")
@@ -347,7 +349,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_quickSort(array_input, 0, n - 1);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(stop - start) / 1e6;
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "merge-sort")
@@ -355,14 +357,14 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_mergeSort(array_input, 0, n - 1);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(stop - start) / 1e6;
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     return runtime;
 }
 void ComparisonMode(string algorithm1, string algorithm2, int array_input[], int n, string input_order, string input_file, int cmd)
 {
-    int comp1, comp2;
+    ll comp1, comp2;
     double runtime1, runtime2;
     if (cmd == 4)
     {
@@ -379,6 +381,6 @@ void ComparisonMode(string algorithm1, string algorithm2, int array_input[], int
         runtime1 = runTime(array_input, n, algorithm1);
         runtime2 = runTime(array_input, n, algorithm2);
     }
-    cout << "-----------------------------\nRunning time: " << runtime1 << " seconds | " << runtime2 << " seconds" << '\n';
-    cout << "Comparisons: " << comp1 << " steps | " << comp2 << " steps" << '\n';
+    cout << "-----------------------------\nRunning time: " << runtime1 << " milisecs | " << runtime2 << " milisecs" << '\n';
+    cout << "Comparisons: " << comp1 << " comps | " << comp2 << " comps" << '\n';
 }

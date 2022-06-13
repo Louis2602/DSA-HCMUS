@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+#define ll long long
+
 void Comp_selectionSort(int a[], int n)
 {
 }
@@ -8,7 +10,7 @@ void Comp_insertionSort(int a[], int n)
 {
 }
 // BUBBLE SORT
-void Comp_bubbleSort(int a[], int n, int &cnt_compare)
+void Comp_bubbleSort(int a[], int n, ll &cnt_compare)
 {
     for (int i = 1; ++cnt_compare && i < n; i++)
         for (int j = n - 1; ++cnt_compare && j >= i; j--)
@@ -16,7 +18,7 @@ void Comp_bubbleSort(int a[], int n, int &cnt_compare)
                 swap(a[j], a[j - 1]);
 }
 // HEAP SORT
-void Comp_heapRebuild(int a[], int n, int i, int &cnt_compare)
+void Comp_heapRebuild(int a[], int n, int i, ll &cnt_compare)
 {
     int largest = i;   // Initialize largest as root
     int l = 2 * i + 1; // left = 2*i + 1
@@ -34,7 +36,7 @@ void Comp_heapRebuild(int a[], int n, int i, int &cnt_compare)
         Comp_heapRebuild(a, n, largest, cnt_compare);
     }
 }
-void Comp_heapSort(int a[], int n, int &cnt_compare)
+void Comp_heapSort(int a[], int n, ll &cnt_compare)
 {
     // Build heap (rearrange array)
     for (int i = n / 2 - 1; ++cnt_compare && i >= 0; i--)
@@ -46,7 +48,7 @@ void Comp_heapSort(int a[], int n, int &cnt_compare)
     }
 }
 // MERGE SORT
-void Comp_merge(int a[], int low, int high, int mid, int &cnt_compare)
+void Comp_merge(int a[], int low, int high, int mid, ll &cnt_compare)
 {
     int i, j, k;
     int *c = new int[1000000];
@@ -84,7 +86,7 @@ void Comp_merge(int a[], int low, int high, int mid, int &cnt_compare)
         a[i] = c[i];
     delete[] c;
 }
-void Comp_mergeSort(int a[], int l, int r, int &cnt_compare)
+void Comp_mergeSort(int a[], int l, int r, ll &cnt_compare)
 {
     if (++cnt_compare && l < r)
     {
@@ -95,7 +97,7 @@ void Comp_mergeSort(int a[], int l, int r, int &cnt_compare)
     }
 }
 // QUICK SORT
-int Comp_partition(int a[], int l, int r, int &cnt_compare)
+int Comp_partition(int a[], int l, int r, ll &cnt_compare)
 {
     int first = l, last = r;
     int pivot = a[first];
@@ -116,7 +118,7 @@ int Comp_partition(int a[], int l, int r, int &cnt_compare)
     return last1;
 }
 
-void Comp_quickSort(int a[], int l, int r, int &cnt_compare)
+void Comp_quickSort(int a[], int l, int r, ll &cnt_compare)
 {
     if (++cnt_compare && l < r)
     {
