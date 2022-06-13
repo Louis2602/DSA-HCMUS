@@ -1,10 +1,10 @@
 #include <iostream>
 using namespace std;
 
-void selectionSort(int a[], int n)
+void Algo_selectionSort(int a[], int n)
 {
 }
-void insertionSort(int a[], int n)
+void Algo_insertionSort(int a[], int n)
 {
 }
 // BUBBLE SORT
@@ -140,18 +140,18 @@ void Algo_quickSort(int a[], int l, int r)
     }
 }
 
-void shakerSort(int a[], int n)
+void Algo_shakerSort(int a[], int n)
 {
 }
-void shellSort(int a[], int n)
+void Algo_shellSort(int a[], int n)
 {
 }
-void CountingSort(int a[], int n)
+void Algo_CountingSort(int a[], int n)
 {
 }
-void radixSort(int a[], int n)
+void Algo_radixSort(int a[], int n)
 {
 }
-void flashSort(int a[], int n)
+void Algo_flashSort(int a[], int n)
 {
 }

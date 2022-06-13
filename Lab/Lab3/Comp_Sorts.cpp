@@ -1,6 +1,12 @@
 #include <iostream>
 using namespace std;
 
+void Comp_selectionSort(int a[], int n)
+{
+}
+void Comp_insertionSort(int a[], int n)
+{
+}
 // BUBBLE SORT
 void Comp_bubbleSort(int a[], int n, int &cnt_compare)
 {
@@ -118,4 +124,19 @@ void Comp_quickSort(int a[], int l, int r, int &cnt_compare)
         Comp_quickSort(a, l, p - 1, cnt_compare);
         Comp_quickSort(a, p + 1, r, cnt_compare);
     }
+}
+void Comp_shakerSort(int a[], int n)
+{
+}
+void Comp_shellSort(int a[], int n)
+{
+}
+void Comp_CountingSort(int a[], int n)
+{
+}
+void Comp_radixSort(int a[], int n)
+{
+}
+void Comp_flashSort(int a[], int n)
+{
 }
