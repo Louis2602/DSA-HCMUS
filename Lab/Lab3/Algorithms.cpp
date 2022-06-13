@@ -1,5 +1,14 @@
 #include "DataGenerator.cpp"
-#include "Sorts.cpp"
+#include "Algo_Sorts.cpp"
+#include "Comp_Sorts.cpp"
+
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <chrono>
+
+using namespace std;
+using namespace std::chrono;
 
 void executeCommand1(string, string, string);
 void executeCommand2(string, int, string, string);
@@ -309,6 +318,8 @@ int numCompares(int array_input[], int n, string algorithm)
         Comp_heapSort(array_input, n, cnt_compare);
     else if (algorithm == "merge-sort")
         Comp_mergeSort(array_input, 0, n - 1, cnt_compare);
+    else if (algorithm == "quick-sort")
+        Comp_quickSort(array_input, 0, n - 1, cnt_compare);
 
     return cnt_compare;
 }
@@ -334,7 +345,7 @@ double runTime(int array_input[], int n, string algorithm)
     else if (algorithm == "quick-sort")
     {
         auto start = high_resolution_clock::now();
-        quickSort(array_input, 0, n - 1);
+        Algo_quickSort(array_input, 0, n - 1);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e6;
         runtime = duration.count();
