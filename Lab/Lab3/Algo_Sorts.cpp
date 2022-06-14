@@ -104,10 +104,6 @@ int Algo_partition(int a[], int l, int r)
         swap(a[l], a[r]);
     else if (a[mid] > a[l] && a[l] < a[r])
         swap(a[l], a[mid]);
-    else if (a[mid] > a[r] && a[r] > a[l])
-        swap(a[r], a[mid]);
-    else if (a[r] > a[mid] && a[mid] > a[l])
-        swap(a[r], a[mid]);
     else if (a[r] > a[l] && a[l] > a[mid])
         swap(a[r], a[l]);
 

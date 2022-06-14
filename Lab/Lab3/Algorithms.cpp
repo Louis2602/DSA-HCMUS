@@ -219,7 +219,8 @@ void executeCommand4(string algorithm1, string algorithm2, string input_file)
     int *a1 = array_input;
     int *a2 = array_input;
     ComparisonMode(algorithm1, algorithm2, a1, a2, n, "", input_file, 4);
-    delete[] array_input;
+    delete[] a1;
+    delete[] a2;
 }
 void executeCommand5(string algorithm1, string algorithm2, int input_size, string input_order)
 {
@@ -244,7 +245,8 @@ void executeCommand5(string algorithm1, string algorithm2, int input_size, strin
         exit(1);
     }
     ComparisonMode(algorithm1, algorithm2, a1, a2, input_size, input_order, "input.txt", 5);
-    delete[] array_input;
+    delete[] a1;
+    delete[] a2;
 }
 void OutputParams(string output_params, double runtime, int comp)
 {
