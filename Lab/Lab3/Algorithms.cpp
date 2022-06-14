@@ -21,7 +21,7 @@ void OutputParams(string, double);
 ll numCompares(int[], int, string);
 double runTime(int[], int, string);
 void AlgorithmMode(string, int[], int, string, string, string, int);
-void ComparisonMode(string, string, int[], int, string, string, int);
+void ComparisonMode(string, string, int[], int[], int, string, string, int);
 int main(int argc, char *argv[])
 {
     string algorithm, input_file, input_order, output_params, n;
@@ -216,12 +216,15 @@ void executeCommand4(string algorithm1, string algorithm2, string input_file)
     cout << "Algorithm: " << algorithm1 << " | " << algorithm2 << '\n';
     cout << "Input file: " << input_file << '\n';
     cout << "Input size: " << n << '\n';
-    ComparisonMode(algorithm1, algorithm2, array_input, n, "", input_file, 4);
+    int *a1 = array_input;
+    int *a2 = array_input;
+    ComparisonMode(algorithm1, algorithm2, a1, a2, n, "", input_file, 4);
     delete[] array_input;
 }
 void executeCommand5(string algorithm1, string algorithm2, int input_size, string input_order)
 {
-    int *array_input = new int[input_size];
+    int *a1 = new int[input_size];
+    int *a2 = new int[input_size];
     cout << "============================\n";
     cout << "|       COMPARE MODE       |\n";
     cout << "============================\n";
@@ -240,7 +243,7 @@ void executeCommand5(string algorithm1, string algorithm2, int input_size, strin
         cout << "[ERROR]: INVALID INPUT ORDER (-rand, -sorted, -rev, -nsorted)!";
         exit(1);
     }
-    ComparisonMode(algorithm1, algorithm2, array_input, input_size, input_order, "input.txt", 5);
+    ComparisonMode(algorithm1, algorithm2, a1, a2, input_size, input_order, "input.txt", 5);
     delete[] array_input;
 }
 void OutputParams(string output_params, double runtime, int comp)
@@ -362,24 +365,25 @@ double runTime(int array_input[], int n, string algorithm)
     }
     return runtime;
 }
-void ComparisonMode(string algorithm1, string algorithm2, int array_input[], int n, string input_order, string input_file, int cmd)
+void ComparisonMode(string algorithm1, string algorithm2, int a1[], int a2[], int n, string input_order, string input_file, int cmd)
 {
     ll comp1, comp2;
     double runtime1, runtime2;
     if (cmd == 4)
     {
-        comp1 = numCompares(array_input, n, algorithm1);
-        comp2 = numCompares(array_input, n, algorithm2);
-        runtime1 = runTime(array_input, n, algorithm1);
-        runtime2 = runTime(array_input, n, algorithm2);
+        comp1 = numCompares(a1, n, algorithm1);
+        comp2 = numCompares(a2, n, algorithm2);
+        runtime1 = runTime(a1, n, algorithm1);
+        runtime2 = runTime(a2, n, algorithm2);
     }
     else
     {
-        GenDataCmd2(input_order, array_input, n);
-        comp1 = numCompares(array_input, n, algorithm1);
-        comp2 = numCompares(array_input, n, algorithm2);
-        runtime1 = runTime(array_input, n, algorithm1);
-        runtime2 = runTime(array_input, n, algorithm2);
+        GenDataCmd2(input_order, a1, n);
+        GenDataCmd2(input_order, a2, n);
+        comp1 = numCompares(a1, n, algorithm1);
+        comp2 = numCompares(a2, n, algorithm2);
+        runtime1 = runTime(a1, n, algorithm1);
+        runtime2 = runTime(a2, n, algorithm2);
     }
     cout << "-----------------------------\nRunning time: " << runtime1 << " milisecs | " << runtime2 << " milisecs" << '\n';
     cout << "Comparisons: " << comp1 << " comps | " << comp2 << " comps" << '\n';
