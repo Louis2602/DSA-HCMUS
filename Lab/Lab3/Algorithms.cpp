@@ -315,6 +315,48 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         OutputParams(output_params, runtime, comp);
         writeFile("output.txt", array_input, n);
     }
+    else if (algorithm == "selection-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime, comp);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "insertion-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime, comp);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "shaker-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime, comp);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "shell-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime, comp);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "radix-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime, comp);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "counting-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime, comp);
+        writeFile("output.txt", array_input, n);
+    }
+    else if (algorithm == "flash-sort")
+    {
+        runtime = runTime(array_input, n, algorithm);
+        OutputParams(output_params, runtime, comp);
+        writeFile("output.txt", array_input, n);
+    }
 }
 ll numCompares(int array_input[], int n, string algorithm)
 {
@@ -327,8 +369,21 @@ ll numCompares(int array_input[], int n, string algorithm)
         Comp_mergeSort(array_input, 0, n - 1, cnt_compare);
     else if (algorithm == "quick-sort")
         Comp_quickSort(array_input, 0, n - 1, cnt_compare);
-
-    return (ll)cnt_compare;
+    else if (algorithm == "selection-sort")
+        Comp_selectionSort(array_input, n, cnt_compare);
+    else if (algorithm == "insertion-sort")
+        Comp_insertionSort(array_input, n, cnt_compare);
+    else if (algorithm == "shaker-sort")
+        Comp_shakerSort(array_input, n, cnt_compare);
+    else if (algorithm == "shell-sort")
+        Comp_shellSort(array_input, n, cnt_compare);
+    else if (algorithm == "radix-sort")
+        Comp_radixSort(array_input, n, cnt_compare);
+    else if (algorithm == "counting-sort")
+        Comp_countingSort(array_input, n, cnt_compare);
+    else if (algorithm == "flash-sort")
+        Comp_flashSort(array_input, n, cnt_compare);
+    return cnt_compare;
 }
 double runTime(int array_input[], int n, string algorithm)
 {
@@ -361,6 +416,62 @@ double runTime(int array_input[], int n, string algorithm)
     {
         auto start = high_resolution_clock::now();
         Algo_mergeSort(array_input, 0, n - 1);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
+        runtime = duration.count();
+    }
+    else if (algorithm == "selection-sort")
+    {
+        auto start = high_resolution_clock::now();
+        Algo_selectionSort(array_input, n);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
+        runtime = duration.count();
+    }
+    else if (algorithm == "insertion-sort")
+    {
+        auto start = high_resolution_clock::now();
+        Algo_insertionSort(array_input, n);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
+        runtime = duration.count();
+    }
+    else if (algorithm == "shaker-sort")
+    {
+        auto start = high_resolution_clock::now();
+        Algo_shakerSort(array_input, n);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
+        runtime = duration.count();
+    }
+    else if (algorithm == "shell-sort")
+    {
+        auto start = high_resolution_clock::now();
+        Algo_shellSort(array_input, n);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
+        runtime = duration.count();
+    }
+    else if (algorithm == "radix-sort")
+    {
+        auto start = high_resolution_clock::now();
+        Algo_radixSort(array_input, n);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
+        runtime = duration.count();
+    }
+    else if (algorithm == "counting-sort")
+    {
+        auto start = high_resolution_clock::now();
+        Algo_countingSort(array_input, n);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
+        runtime = duration.count();
+    }
+    else if (algorithm == "flash-sort")
+    {
+        auto start = high_resolution_clock::now();
+        Algo_flashSort(array_input, n);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();

@@ -1,21 +1,44 @@
 #include <iostream>
+#include <algorithm>
+#include <vector>
+
 using namespace std;
 
 #define ll long long
 
-void Comp_selectionSort(int a[], int n)
+void Comp_selectionSort(int a[], int n, ll &cnt_compare)
 {
+    for (int i = 0; ++cnt_compare && i < n - 1; i++)
+    {
+        int pos = i;
+        for (int j = i + 1; ++cnt_compare && j < n; j++)
+            if (++cnt_compare && a[j] < a[pos])
+                pos = j;
+        swap(a[i], a[pos]);
+    }
 }
-void Comp_insertionSort(int a[], int n)
+void Comp_insertionSort(int a[], int n, ll &cnt_compare)
 {
+    for (int i = 1; ++cnt_compare && i < n; i++)
+    {
+        int key = a[i];
+        int j = i - 1;
+
+        while ((++cnt_compare && key < a[j]) && (++cnt_compare && j >= 0))
+        {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = key;
+    }
 }
 // BUBBLE SORT
 void Comp_bubbleSort(int a[], int n, ll &cnt_compare)
 {
-    for (int i = 1; ++cnt_compare && i < n; i++)
-        for (int j = n - 1; ++cnt_compare && j >= i; j--)
-            if (++cnt_compare && a[j] < a[j - 1])
-                swap(a[j], a[j - 1]);
+    for (int i = 0; ++cnt_compare && i < n - 1; i++)
+        for (int j = 0; ++cnt_compare && j < n - i - 1; j++)
+            if (++cnt_compare && a[j] > a[j + 1])
+                swap(a[j], a[j + 1]);
 }
 // HEAP SORT
 void Comp_heapRebuild(int a[], int n, int i, ll &cnt_compare)
@@ -127,18 +150,132 @@ void Comp_quickSort(int a[], int l, int r, ll &cnt_compare)
         Comp_quickSort(a, p + 1, r, cnt_compare);
     }
 }
-void Comp_shakerSort(int a[], int n)
+void Comp_shakerSort(int a[], int n, ll &cnt_compare)
 {
+    int left = 0, right = n - 1, k = 0;
+    while (left < right && ++cnt_compare)
+    {
+        bool check = false;
+        for (int i = left; ++cnt_compare && i < right; i++)
+        {
+            if (++cnt_compare && a[i] > a[i + 1])
+            {
+                check = true;
+                swap(a[i], a[i + 1]);
+                k = i;
+            }
+        }
+        if (!check)
+            return;
+        right = k;
+        check = false;
+        for (int i = right; ++cnt_compare && i > left; i--)
+        {
+            if (++cnt_compare && a[i] < a[i - 1])
+            {
+                check = true;
+                swap(a[i], a[i - 1]);
+                k = i;
+            }
+        }
+        if (!check)
+            return;
+        left = k;
+    }
 }
-void Comp_shellSort(int a[], int n)
+void Comp_shellSort(int a[], int n, ll &cnt_compare)
 {
+    int interval = 0;
+    for (interval = n / 2; ++cnt_compare && interval >= 1; interval /= 2)
+    {
+        for (int i = interval; ++cnt_compare && i < n; i++)
+        {
+            int tmp = a[i];
+            int j = 0;
+            for (j = i; ++cnt_compare && j >= interval && ++cnt_compare && a[j - interval] > tmp; j -= interval)
+                a[j] = a[j - interval];
+            a[j] = tmp;
+        }
+    }
 }
-void Comp_CountingSort(int a[], int n)
+void Comp_countingSort(int a[], int n, ll &cnt_compare)
 {
+    int max = *max_element(a, a + n);
+    int min = *min_element(a, a + n);
+    vector<int> count(max - min + 1);
+    vector<int> res(n);
+    for (int i = 0; ++cnt_compare && i < n; i++)
+        count[a[i] - min]++;
+    for (int i = 1; ++cnt_compare && i < count.size(); i++)
+        count[i] += count[i - 1];
+    for (int i = n - 1; ++cnt_compare && i >= 0; i--)
+    {
+        res[count[a[i] - min] - 1] = a[i];
+        count[a[i] - min]--;
+    }
+    for (int i = 0; ++cnt_compare && i < n; i++)
+        a[i] = res[i];
 }
-void Comp_radixSort(int a[], int n)
+void Comp_radixSort(int a[], int n, ll &cnt_compare)
 {
+    int *b = new int[n];
+    int m = a[0], exp = 1;
+
+    // get max
+    for (int i = 1; i < n; i++)
+        if (a[i] > m)
+            m = a[i];
+
+    while (++cnt_compare && m / exp > 0)
+    {
+        int bucket[10] = {0};
+        // Counting sort
+        for (int i = 0; ++cnt_compare && i < n; i++)
+            bucket[a[i] / exp % 10]++;
+        for (int i = 1; ++cnt_compare && i < 10; i++)
+            bucket[i] += bucket[i - 1];
+        for (int i = n - 1; ++cnt_compare && i >= 0; i--)
+            b[--bucket[a[i] / exp % 10]] = a[i];
+        for (int i = 0; ++cnt_compare && i < n; i++)
+            a[i] = b[i];
+        exp *= 10;
+    }
+    delete[] b;
 }
-void Comp_flashSort(int a[], int n)
+
+void Comp_selectionSortForFlashSort(vector<int> a, int n, ll &cnt_compare)
 {
+    int i, j, min_idx;
+
+    for (i = 0; ++cnt_compare && i < n - 1; i++)
+    {
+        min_idx = i;
+        for (j = i + 1; ++cnt_compare && j < n; j++)
+            if (++cnt_compare && a[j] < a[min_idx])
+                min_idx = j;
+
+        int tmp = a[min_idx];
+        a[min_idx] = a[i];
+        a[i] = tmp;
+    }
+}
+void Comp_flashSort(int a[], int n, ll &cnt_compare)
+{
+    int max, bucket = 10000, divider, i, j, k;
+    vector<int> *B = new vector<int>[bucket];
+    max = *max_element(a, a + n);
+    divider = (float(max + 1) / bucket);
+    for (i = 0; ++cnt_compare && i < n; i++)
+    {
+        j = a[i] / divider;
+        B[j].push_back(a[i]);
+    }
+
+    for (i = 0; ++cnt_compare && i < bucket; i++)
+        Comp_selectionSortForFlashSort(B[i], B[i].size(), cnt_compare);
+
+    k = 0;
+    for (i = 0; ++cnt_compare && i < bucket; i++)
+        for (j = 0; ++cnt_compare && j < B[i].size(); j++)
+            a[k++] = B[i][j];
 }
