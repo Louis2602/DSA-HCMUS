@@ -124,10 +124,10 @@ int Algo_partition(int a[], int l, int r)
         swap(a[l], a[mid]);
     else if (a[l] > a[r] && a[r] > a[mid])
         swap(a[l], a[r]);
-    else if (a[mid] > a[l] && a[l] < a[r])
-        swap(a[l], a[mid]);
-    else if (a[r] > a[l] && a[l] > a[mid])
+    else if (a[mid] > a[r] && a[r] < a[l])
         swap(a[r], a[l]);
+    else if (a[r] > a[mid] && a[mid] > a[l])
+        swap(a[mid], a[l]);
 
     int first = l, last = r;
     int pivot = a[first];
@@ -157,7 +157,7 @@ void Algo_quickSort(int a[], int l, int r)
         Algo_quickSort(a, p + 1, r);
     }
 }
-
+// SHAKER SORT
 void Algo_shakerSort(int a[], int n)
 {
     int left = 0, right = n - 1, k = 0;
@@ -191,6 +191,7 @@ void Algo_shakerSort(int a[], int n)
         left = k;
     }
 }
+// SHELL SORT
 void Algo_shellSort(int a[], int n)
 {
     int interval = 0;
@@ -208,6 +209,7 @@ void Algo_shellSort(int a[], int n)
         }
     }
 }
+// COUNTING SORT
 void Algo_countingSort(int a[], int n)
 {
     int max = *max_element(a, a + n);
@@ -232,6 +234,7 @@ void Algo_countingSort(int a[], int n)
         a[i] = res[i];
     }
 }
+// RADIX SORT
 void Algo_radixSort(int a[], int n)
 {
     int *b = new int[n];
@@ -258,39 +261,67 @@ void Algo_radixSort(int a[], int n)
     }
     delete[] b;
 }
-void Algo_selectionSortForFlashSort(vector<int> &a, int n)
-{
-    int i, j, min_idx;
-
-    for (i = 0; i < n - 1; i++)
-    {
-        min_idx = i;
-        for (j = i + 1; j < n; j++)
-            if (a[j] < a[min_idx])
-                min_idx = j;
-
-        int tmp = a[min_idx];
-        a[min_idx] = a[i];
-        a[i] = tmp;
-    }
-}
+// FLASH SORT
 void Algo_flashSort(int a[], int n)
 {
-    int max, bucket = 10000, divider, i, j, k;
-    vector<int> *B = new vector<int>[bucket];
-    max = *max_element(a, a + n);
-    divider = (float(max + 1) / bucket);
-    for (i = 0; i < n; i++)
+    if (n <= 1)
+        return;
+    int m = n * 0.43;
+    if (m <= 2)
+        m = 2;
+    vector<int> __L(m);
+    // int m = n;
+    for (int i = 0; i < m; ++i)
+        __L[i] = 0;
+    int Mx = a[0], Mn = a[0];
+    for (int i = 1; i < n; ++i)
     {
-        j = a[i] / divider;
-        B[j].push_back(a[i]);
+        if (Mx < a[i])
+            Mx = a[i];
+        if (Mn > a[i])
+            Mn = a[i];
+    }
+    if (Mx == Mn)
+        return;
+
+#define getK(x) 1ll * (m - 1) * (x - Mn) / (Mx - Mn)
+
+    for (int i = 0; i < n; ++i)
+        ++__L[getK(a[i])];
+    for (int i = 1; i < m; ++i)
+        __L[i] += __L[i - 1];
+    int count = 0;
+    int i = 0;
+    while (count < n)
+    {
+        int k = getK(a[i]);
+        while (i >= __L[k])
+            k = getK(a[++i]);
+        int z = a[i];
+        while (i != __L[k])
+        {
+            k = getK(z);
+            int y = a[__L[k] - 1];
+            a[--__L[k]] = z;
+            z = y;
+            ++count;
+        }
     }
 
-    for (i = 0; i < bucket; i++)
-        Algo_selectionSortForFlashSort(B[i], B[i].size());
-
-    k = 0;
-    for (i = 0; i < bucket; i++)
-        for (j = 0; j < B[i].size(); j++)
-            a[k++] = B[i][j];
+    for (int k = 1; k < m; ++k)
+    {
+        for (int i = __L[k] - 2; i >= __L[k - 1]; --i)
+        {
+            if (a[i] > a[i + 1])
+            {
+                int t = a[i], j = i;
+                while (t > a[j + 1])
+                {
+                    a[j] = a[j + 1];
+                    ++j;
+                }
+                a[j] = t;
+            }
+        }
+    }
 }

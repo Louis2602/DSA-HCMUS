@@ -251,12 +251,12 @@ void executeCommand5(string algorithm1, string algorithm2, int input_size, strin
 void OutputParams(string output_params, double runtime, int comp)
 {
     if (output_params == "-time")
-        cout << "-----------------------------\nRunning time: " << runtime << " milisecs" << '\n';
+        cout << "-----------------------------\nRunning time: " << runtime << " ms" << '\n';
     else if (output_params == "-comp")
         cout << "-----------------------------\nComparisons: " << comp << " comps" << '\n';
     else if (output_params == "-both")
     {
-        cout << "-----------------------------\nRunning time: " << runtime << " milisecs" << '\n';
+        cout << "-----------------------------\nRunning time: " << runtime << " ms" << '\n';
         cout << "Comparisons: " << comp << '\n';
     }
     else
@@ -498,6 +498,6 @@ void ComparisonMode(string algorithm1, string algorithm2, int a1[], int a2[], in
         runtime1 = runTime(a1, n, algorithm1);
         runtime2 = runTime(a2, n, algorithm2);
     }
-    cout << "-----------------------------\nRunning time: " << runtime1 << " milisecs | " << runtime2 << " milisecs" << '\n';
+    cout << "-----------------------------\nRunning time: " << runtime1 << " ms | " << runtime2 << " ms" << '\n';
     cout << "Comparisons: " << comp1 << " comps | " << comp2 << " comps" << '\n';
 }
