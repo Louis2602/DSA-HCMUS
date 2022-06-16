@@ -4,7 +4,7 @@
 
 using namespace std;
 
-#define ll long long
+#define ll long long int
 
 void Comp_selectionSort(int a[], int n, ll &cnt_compare)
 {

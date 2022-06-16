@@ -7,7 +7,7 @@
 #include <iostream>
 #include <chrono>
 
-#define ll long long
+#define ll long long int
 
 using namespace std;
 using namespace std::chrono;
@@ -18,7 +18,7 @@ void executeCommand3(string, int, string);
 void executeCommand4(string, string, string);
 void executeCommand5(string, string, int, string);
 void OutputParams(string, double);
-ll numCompares(int[], int, string);
+string numCompares(int[], int, string);
 double runTime(int[], int, string);
 void AlgorithmMode(string, int[], int, string, string, string, int);
 void ComparisonMode(string, string, int[], int[], int, string, string, int);
@@ -248,7 +248,7 @@ void executeCommand5(string algorithm1, string algorithm2, int input_size, strin
     delete[] a1;
     delete[] a2;
 }
-void OutputParams(string output_params, double runtime, int comp)
+void OutputParams(string output_params, double runtime, string comp)
 {
     if (output_params == "-time")
         cout << "-----------------------------\nRunning time: " << runtime << " ms" << '\n';
@@ -275,7 +275,7 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         input_order = "Reversed";
     else if (input_order == "-nsorted")
         input_order = "Nearly Sorted";
-    ll comp = numCompares(array_input, n, algorithm);
+    string comp = numCompares(array_input, n, algorithm);
     switch (cmd)
     {
     case 1:
@@ -358,7 +358,7 @@ void AlgorithmMode(string algorithm, int array_input[], int n, string output_par
         writeFile("output.txt", array_input, n);
     }
 }
-ll numCompares(int array_input[], int n, string algorithm)
+string numCompares(int array_input[], int n, string algorithm)
 {
     ll cnt_compare = 0;
     if (algorithm == "bubble-sort")
@@ -383,7 +383,12 @@ ll numCompares(int array_input[], int n, string algorithm)
         Comp_countingSort(array_input, n, cnt_compare);
     else if (algorithm == "flash-sort")
         Comp_flashSort(array_input, n, cnt_compare);
-    return cnt_compare;
+
+    string output_comp;
+    stringstream ss;
+    ss << cnt_compare;
+    ss >> output_comp;
+    return output_comp;
 }
 double runTime(int array_input[], int n, string algorithm)
 {
@@ -480,7 +485,7 @@ double runTime(int array_input[], int n, string algorithm)
 }
 void ComparisonMode(string algorithm1, string algorithm2, int a1[], int a2[], int n, string input_order, string input_file, int cmd)
 {
-    ll comp1, comp2;
+    string comp1, comp2;
     double runtime1, runtime2;
     if (cmd == 4)
     {
