@@ -26,13 +26,15 @@ int main(int argc, char *argv[])
 {
     string algorithm, input_file, input_order, output_params, n;
     int input_size;
+    // Comparison Mode
+    string algorithm1, algorithm2;
     // Algorithm Mode
     if (argc < 5)
     {
         cout << "[ERROR]: COMMAND NOT FOUND!";
         exit(1);
     }
-    if (string(argv[1]) == "-a")
+    else if (string(argv[1]) == "-a")
     {
         n = argv[3];
         stringstream ss(n);
@@ -72,9 +74,7 @@ int main(int argc, char *argv[])
             exit(1);
         }
     }
-    // Comparison Mode
-    string algorithm1, algorithm2;
-    if (string(argv[1]) == "-c")
+    else if (string(argv[1]) == "-c")
     {
         // Command 4
         if (argc == 5)
