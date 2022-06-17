@@ -124,13 +124,13 @@ int Comp_partition(int a[], int low, int high, ll &cnt_compare)
 {
     int mid = low + (high - low) / 2;
     if (a[low] > a[mid] && a[mid] > a[high])
-        swap(a[low], a[mid]);
+        swap(a[low], a[mid]), cnt_compare += 2;
     else if (a[low] > a[high] && a[high] > a[mid])
-        swap(a[low], a[high]);
+        swap(a[low], a[high]), cnt_compare += 2;
     else if (a[mid] > a[high] && a[high] < a[low])
-        swap(a[high], a[low]);
+        swap(a[high], a[low]), cnt_compare += 2;
     else if (a[high] > a[mid] && a[mid] > a[low])
-        swap(a[mid], a[low]);
+        swap(a[mid], a[low]), cnt_compare += 2;
 
     int pivot = a[low];
     int last1 = low;
