@@ -117,22 +117,22 @@ void Algo_mergeSort(int a[], int l, int r)
     }
 }
 // QUICK SORT
-int partition(int a[], int l, int r)
+int partition(int a[], int low, int high)
 {
-    int mid = l + (r - l) / 2;
-    if (a[l] > a[mid] && a[mid] > a[r])
-        swap(a[l], a[mid]);
-    else if (a[l] > a[r] && a[r] > a[mid])
-        swap(a[l], a[r]);
-    else if (a[mid] > a[r] && a[r] > a[l])
-        swap(a[r], a[l]);
-    else if (a[r] > a[mid] && a[mid] > a[l])
-        swap(a[mid], a[l]);
+    int mid = low + (high - low) / 2;
+    if (a[low] > a[mid] && a[mid] > a[high])
+        swap(a[low], a[mid]);
+    else if (a[low] > a[high] && a[high] > a[mid])
+        swap(a[low], a[high]);
+    else if (a[mid] > a[high] && a[high] < a[low])
+        swap(a[high], a[low]);
+    else if (a[high] > a[mid] && a[mid] > a[low])
+        swap(a[mid], a[low]);
 
-    int pivot = a[l];
-    int last1 = l;
-    int first_unknown = l + 1;
-    while (first_unknown <= r)
+    int pivot = a[low];
+    int last1 = low;
+    int first_unknown = low + 1;
+    while (first_unknown <= high)
     {
         if (a[first_unknown] < pivot)
         {
@@ -141,7 +141,7 @@ int partition(int a[], int l, int r)
         }
         first_unknown++;
     }
-    swap(a[l], a[last1]);
+    swap(a[low], a[last1]);
     return last1;
 }
 void Algo_quickSort(int a[], int low, int high)

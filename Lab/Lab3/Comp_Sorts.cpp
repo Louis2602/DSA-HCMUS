@@ -120,34 +120,41 @@ void Comp_mergeSort(int a[], int l, int r, ll &cnt_compare)
     }
 }
 // QUICK SORT
-int Comp_partition(int a[], int l, int r, ll &cnt_compare)
+int Comp_partition(int a[], int low, int high, ll &cnt_compare)
 {
-    int first = l, last = r;
-    int pivot = a[first];
-    int last1 = first;
-    int first_unknown = first + 1;
-    while (++cnt_compare && first_unknown <= last)
+    int mid = low + (high - low) / 2;
+    if (a[low] > a[mid] && a[mid] > a[high])
+        swap(a[low], a[mid]);
+    else if (a[low] > a[high] && a[high] > a[mid])
+        swap(a[low], a[high]);
+    else if (a[mid] > a[high] && a[high] < a[low])
+        swap(a[high], a[low]);
+    else if (a[high] > a[mid] && a[mid] > a[low])
+        swap(a[mid], a[low]);
+
+    int pivot = a[low];
+    int last1 = low;
+    int first_unknown = low + 1;
+    while (++cnt_compare && first_unknown <= high)
     {
         if (++cnt_compare && a[first_unknown] < pivot)
         {
             swap(a[first_unknown], a[last1 + 1]);
             last1++;
-            first_unknown++;
         }
-        else
-            first_unknown++;
+        first_unknown++;
     }
-    swap(a[first], a[last1]);
+    swap(a[low], a[last1]);
     return last1;
 }
 
-void Comp_quickSort(int a[], int l, int r, ll &cnt_compare)
+void Comp_quickSort(int a[], int low, int high, ll &cnt_compare)
 {
-    if (++cnt_compare && l < r)
+    if (++cnt_compare && low < high)
     {
-        int p = Comp_partition(a, l, r, cnt_compare);
-        Comp_quickSort(a, l, p - 1, cnt_compare);
-        Comp_quickSort(a, p + 1, r, cnt_compare);
+        int p = Comp_partition(a, low, high, cnt_compare);
+        Comp_quickSort(a, low, p - 1, cnt_compare);
+        Comp_quickSort(a, p + 1, high, cnt_compare);
     }
 }
 // SHAKER SORT
