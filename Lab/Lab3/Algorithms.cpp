@@ -398,7 +398,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_bubbleSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "heap-sort")
@@ -406,7 +406,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_heapSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "quick-sort")
@@ -414,7 +414,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_quickSort(array_input, 0, n - 1);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "merge-sort")
@@ -422,7 +422,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_mergeSort(array_input, 0, n - 1);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "selection-sort")
@@ -430,7 +430,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_selectionSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "insertion-sort")
@@ -438,7 +438,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_insertionSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "shaker-sort")
@@ -446,7 +446,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_shakerSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "shell-sort")
@@ -454,7 +454,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_shellSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "radix-sort")
@@ -462,7 +462,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_radixSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "counting-sort")
@@ -470,7 +470,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_countingSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     else if (algorithm == "flash-sort")
@@ -478,7 +478,7 @@ double runTime(int array_input[], int n, string algorithm)
         auto start = high_resolution_clock::now();
         Algo_flashSort(array_input, n);
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start);
+        auto duration = duration_cast<microseconds>(stop - start) / 1e3;
         runtime = duration.count();
     }
     return runtime;
