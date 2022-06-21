@@ -134,6 +134,43 @@ void LevelOrder(NODE *pRoot)
     }
 }
 
+void Remove(NODE *&pRoot, int x)
+{
+    if (pRoot == NULL)
+        return;
+    if (x > pRoot->data)
+        Remove(pRoot->right, x);
+    else if (x < pRoot->data)
+        Remove(pRoot->left, x);
+    else
+    {
+        if (pRoot->left == NULL && pRoot->right == NULL)
+        {
+            NODE *t = pRoot;
+            pRoot = NULL;
+            delete t;
+        }
+        else if (pRoot->left == NULL)
+        {
+            NODE *t = pRoot;
+            pRoot = pRoot->right;
+            delete t;
+        }
+        else if (pRoot->right == NULL)
+        {
+            NODE *t = pRoot;
+            pRoot = pRoot->left;
+            delete t;
+        }
+        else
+        {
+            NODE *t = pRoot;
+            pRoot = pRoot->left;
+            delete t;
+        }
+    }
+}
+
 int main()
 {
     NODE *pRoot = NULL;
@@ -168,9 +205,13 @@ int main()
     cout << '\n';
     cout << "Height = ";
     cout << Height(pRoot);
+    cout << '\n';
     /*if(isPerfectBST(pRoot))
         cout << "YES\n";
     else cout << "NO\n";*/
+    cout << "Remove 6 = ";
+    Remove(pRoot, 6);
+    LevelOrder(pRoot); // 5 3 6 4 2 7
     cout << '\n';
     return 0;
 }
