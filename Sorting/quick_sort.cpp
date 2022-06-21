@@ -1,38 +1,34 @@
 #include <iostream>
-#include <fstream>
-
 using namespace std;
 
 int partition(int a[], int l, int r)
 {
     int pivot = a[l];
-    int i = l + 1;
-    int j = r;
-    while (i <= j)
+    int last1 = l;
+    int first_unknown = l + 1;
+    while (first_unknown <= r)
     {
-        while (i <= j && a[i] < pivot)
-            i++;
-        while (i <= j && a[j] > pivot)
-            j--;
-        if (i < j)
+        if (a[first_unknown] < pivot)
         {
-            swap(a[i], a[j]);
-            i++;
-            j--;
+            swap(a[first_unknown], a[last1 + 1]);
+            last1++;
         }
+        first_unknown++;
     }
-    swap(a[l], a[j]);
-    return j;
+    swap(a[l], a[last1]);
+    return last1;
 }
-void quickSort(int a[], int low, int high)
+
+void quickSort(int a[], int l, int r)
 {
-    if (low < high)
+    if (l < r)
     {
-        int k = partition(a, low, high);
-        quickSort(a, low, k - 1);
-        quickSort(a, k + 1, high);
+        int p = partition(a, l, r);
+        quickSort(a, l, p - 1);
+        quickSort(a, p + 1, r);
     }
 }
+
 void print(int a[], int n)
 {
     for (int i = 0; i < n; i++)
@@ -41,23 +37,9 @@ void print(int a[], int n)
 }
 int main()
 {
-    int *a, n;
-    ifstream fi("input.txt");
-    ofstream fo("output.txt");
-    fi >> n;
-    a = new int[n];
-    for(int i=0; i<n; i++)
-        fi >> a[i];
-    cout << n;
-    //cout << "Before: ";
-    //print(a, n);
-    //cout << "After sorting: ";
+    int a[] = {5, 2, 3, 4, 1, 6};
+    int n = 6;
     quickSort(a, 0, n - 1);
-    for(int i=0; i<n; i++)
-        fo << a[i] << " ";
-    fi.close();
-    fo.close();
-        
-    //print(a, n);
+    print(a, n);
     return 0;
 }
