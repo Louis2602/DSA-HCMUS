@@ -101,12 +101,11 @@ void preOrder(NODE *pRoot)
 }
 void inOrder(NODE *pRoot)
 {
-    if (pRoot != NULL)
-    {
-        inOrder(pRoot->left);
-        cout << pRoot->data << " ";
-        inOrder(pRoot->right);
-    }
+    if (pRoot == NULL)
+        return;
+    inOrder(pRoot->left);
+    cout << pRoot->data << " ";
+    inOrder(pRoot->right);
 }
 void postOrder(NODE *pRoot)
 {
@@ -133,7 +132,13 @@ void LevelOrder(NODE *pRoot)
         Q.pop();
     }
 }
-
+NODE *findMin(NODE *pRoot)
+{
+    NODE *cur = pRoot;
+    while (cur && cur->left != NULL)
+        cur = cur->left;
+    return cur;
+}
 void Remove(NODE *&pRoot, int x)
 {
     if (pRoot == NULL)
@@ -146,9 +151,9 @@ void Remove(NODE *&pRoot, int x)
     {
         if (pRoot->left == NULL && pRoot->right == NULL)
         {
-            NODE *t = pRoot;
+            delete pRoot;
             pRoot = NULL;
-            delete t;
+            return;
         }
         else if (pRoot->left == NULL)
         {
@@ -164,17 +169,54 @@ void Remove(NODE *&pRoot, int x)
         }
         else
         {
-            NODE *t = pRoot;
-            pRoot = pRoot->left;
-            delete t;
+            NODE *t = findMin(pRoot->right);
+            pRoot->data = t->data;
+            Remove(pRoot->right, t->data);
         }
     }
 }
-
+int countLeaf(NODE *pRoot)
+{
+    if (pRoot == NULL)
+        return 0;
+    if (pRoot->left == NULL && pRoot->right == NULL)
+        return 1;
+    return countLeaf(pRoot->left) + countLeaf(pRoot->right);
+}
+int countLess(NODE *pRoot, int x)
+{
+    int cnt = 0;
+    if (pRoot == NULL)
+        return 0;
+    if (pRoot->data < x)
+    {
+        cnt++;
+        cnt += countLess(pRoot->left, x);
+        cnt += countLess(pRoot->right, x);
+    }
+    else
+        cnt += countLess(pRoot->left, x);
+    return cnt;
+}
+int countGreater(NODE *pRoot, int x)
+{
+    int cnt = 0;
+    if (pRoot == NULL)
+        return 0;
+    if (pRoot->data > x)
+    {
+        cnt++;
+        cnt += countGreater(pRoot->left, x);
+        cnt += countGreater(pRoot->right, x);
+    }
+    else
+        cnt += countGreater(pRoot->right, x);
+    return cnt;
+}
 int main()
 {
     NODE *pRoot = NULL;
-    int a[] = {5, 3, 6, 4, 2, 7};
+    // int a[] = {5, 3, 6, 4, 2, 7};
     Insert(pRoot, 5);
     Insert(pRoot, 3);
     Insert(pRoot, 7);
@@ -209,9 +251,17 @@ int main()
     /*if(isPerfectBST(pRoot))
         cout << "YES\n";
     else cout << "NO\n";*/
-    cout << "Remove 6 = ";
-    Remove(pRoot, 6);
+    cout << "Remove = ";
+    Remove(pRoot, 7);
     LevelOrder(pRoot); // 5 3 6 4 2 7
+    cout << '\n';
+    cout << "Leaf Nodes = " << countLeaf(pRoot);
+    cout << '\n';
+    int x;
+    cin >> x;
+    cout << "Nodes less than " << x << " = " << countLess(pRoot, x);
+    cout << '\n';
+    cout << "Nodes greater than " << x << " = " << countGreater(pRoot, x);
     cout << '\n';
     return 0;
 }
