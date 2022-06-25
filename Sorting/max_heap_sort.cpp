@@ -25,7 +25,7 @@ void heapRebuild(int pos, int a[], int n)
 }
 void heapConstruct(int a[], int n)
 {
-    int i = n / 2 - 1;
+    int i = (n - 1) / 2;
     while (i >= 0)
     {
         heapRebuild(i, a, n);
