@@ -26,8 +26,10 @@ void Insert(NODE *&pRoot, int x)
     }
     if (x > pRoot->data)
         Insert(pRoot->right, x);
-    else
+    else if (x < pRoot->data)
         Insert(pRoot->left, x);
+    else
+        return;
 }
 
 int countNode(NODE *pRoot)
