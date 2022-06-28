@@ -215,6 +215,34 @@ int countGreater(NODE *pRoot, int x)
         cnt += countGreater(pRoot->right, x);
     return cnt;
 }
+
+int minVal(NODE *pRoot)
+{
+    if (pRoot == NULL)
+        return 10000000;
+    if (pRoot->left == NULL && pRoot->right == NULL)
+        return pRoot->data;
+    return min(minVal(pRoot->left), minVal(pRoot->right));
+}
+int maxVal(NODE *pRoot)
+{
+    if (pRoot == NULL)
+        return -10000000;
+    if (pRoot->left == NULL && pRoot->right == NULL)
+        return pRoot->data;
+    return max(maxVal(pRoot->left), maxVal(pRoot->right));
+}
+bool isBST(NODE *pRoot)
+{
+    if (pRoot == NULL)
+        return 1;
+    if (pRoot->data < maxVal(pRoot->left) || pRoot->data > minVal(pRoot->right))
+        return 0;
+    else
+        return 0;
+    return isBST(pRoot->left) && isBST(pRoot->right);
+}
+
 int main()
 {
     NODE *pRoot = NULL;
@@ -259,11 +287,16 @@ int main()
     cout << '\n';
     cout << "Leaf Nodes = " << countLeaf(pRoot);
     cout << '\n';
-    int x;
-    cin >> x;
-    cout << "Nodes less than " << x << " = " << countLess(pRoot, x);
-    cout << '\n';
-    cout << "Nodes greater than " << x << " = " << countGreater(pRoot, x);
-    cout << '\n';
+    // int x;
+    // cin >> x;
+    // cout << "Nodes less than " << x << " = " << countLess(pRoot, x);
+    // cout << '\n';
+    // cout << "Nodes greater than " << x << " = " << countGreater(pRoot, x);
+    // cout << '\n';
+    if (isBST(pRoot))
+        cout << "isBST: True\n";
+    else
+        cout << "isBST: False\n";
+
     return 0;
 }
