@@ -78,15 +78,9 @@ int Height(NODE *pRoot)
     return max(left_height, right_height) + 1;
 }
 
-int getLength(NODE *pRoot)
-{
-    if (pRoot == NULL)
-        return 0;
-    return 1 + getLength(pRoot->left) + getLength(pRoot->right);
-}
 bool isPerfectBST(NODE *pRoot)
 {
-    int len = getLength(pRoot);
+    int len = countNode(pRoot);
     cout << len << endl;
     return !(len & (len + 1));
 }
