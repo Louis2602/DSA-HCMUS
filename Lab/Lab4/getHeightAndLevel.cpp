@@ -25,13 +25,11 @@ void Insert(NODE *&pRoot, int x)
         return;
     }
     if (x > pRoot->data)
-    {
         Insert(pRoot->right, x);
-    }
-    else
-    {
+    else if (x < pRoot->data)
         Insert(pRoot->left, x);
-    }
+    else
+        return;
 }
 
 int Height(NODE *pRoot, int x, int &height)
@@ -80,25 +78,6 @@ int levelOfNode(NODE *pRoot, int value)
     return 0;
 }
 
-void LevelOrder(NODE *pRoot)
-{
-    if (pRoot == NULL)
-        return;
-    queue<NODE *> Q;
-    Q.push(pRoot);
-    while (!Q.empty())
-    {
-        NODE *cur = Q.front();
-        cout << cur->data << " ";
-        if (cur->left != NULL)
-            Q.push(cur->left);
-        if (cur->right != NULL)
-            Q.push(cur->right);
-        Q.pop();
-    }
-    cout << '\n';
-}
-
 int find(NODE *pRoot, NODE *p, int level)
 {
     if (pRoot == NULL)
@@ -118,6 +97,25 @@ int Level(NODE *pRoot, NODE *p)
         return 0;
     int level = 1;
     return find(pRoot, p, level);
+}
+
+void LevelOrder(NODE *pRoot)
+{
+    if (pRoot == NULL)
+        return;
+    queue<NODE *> Q;
+    Q.push(pRoot);
+    while (!Q.empty())
+    {
+        NODE *cur = Q.front();
+        cout << cur->data << " ";
+        if (cur->left != NULL)
+            Q.push(cur->left);
+        if (cur->right != NULL)
+            Q.push(cur->right);
+        Q.pop();
+    }
+    cout << '\n';
 }
 int main()
 {
