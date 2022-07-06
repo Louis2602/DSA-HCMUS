@@ -91,7 +91,7 @@ int find(NODE *pRoot, NODE *p, int level)
     return x;
 }
 
-int Level(NODE *pRoot, NODE *p)
+int LevelOfNode_2(NODE *pRoot, NODE *p)
 {
     if (pRoot == NULL)
         return 0;
@@ -136,6 +136,6 @@ int main()
     cout << "Height of " << value << " is: " << heightOfNode(pRoot, value) << '\n';
     NODE *p = createNode(4);
     cout << "Level of " << value << " is: " << levelOfNode(pRoot, value) << '\n';
-    cout << "Level of " << value << " is: " << Level(pRoot, p) << '\n';
+    cout << "Level of " << value << " is: " << LevelOfNode_2(pRoot, p) << '\n';
     return 0;
 }
