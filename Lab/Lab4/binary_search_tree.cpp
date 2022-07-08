@@ -78,6 +78,13 @@ int Height(NODE *pRoot)
     return max(left_height, right_height) + 1;
 }
 
+int heightOfNode(NODE *pRoot, int value)
+{
+    NODE *p = Search(pRoot, value);
+    if (p)
+        return Height(p);
+    return -1;
+}
 bool isPerfectBST(NODE *pRoot)
 {
     int len = countNode(pRoot);
@@ -275,22 +282,25 @@ int main()
     /*if(isPerfectBST(pRoot))
         cout << "YES\n";
     else cout << "NO\n";*/
-    cout << "Remove = ";
-    Remove(pRoot, 7);
-    LevelOrder(pRoot); // 5 3 6 4 2 7
-    cout << '\n';
-    cout << "Leaf Nodes = " << countLeaf(pRoot);
-    cout << '\n';
+    // cout << "Remove = ";
+    // Remove(pRoot, 7);
+    // LevelOrder(pRoot); // 5 3 6 4 2 7
+    // cout << '\n';
+    // cout << "Leaf Nodes = " << countLeaf(pRoot);
+    // cout << '\n';
     // int x;
     // cin >> x;
     // cout << "Nodes less than " << x << " = " << countLess(pRoot, x);
     // cout << '\n';
     // cout << "Nodes greater than " << x << " = " << countGreater(pRoot, x);
     // cout << '\n';
-    if (isBST(pRoot))
-        cout << "isBST: True\n";
-    else
-        cout << "isBST: False\n";
-
+    // if (isBST(pRoot))
+    //     cout << "isBST: True\n";
+    // else
+    //     cout << "isBST: False\n";
+    int x;
+    cout << "Enter a value to find the height: ";
+    cin >> x;
+    cout << "Height of node: " << x << " is: " << heightOfNode(pRoot, x);
     return 0;
 }
