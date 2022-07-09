@@ -20,13 +20,13 @@ void printSolution(int dist[])
         cout << i << " \t\t" << dist[i] << endl;
 }
 
-void dijkstra(int graph[V][V], int src)
+void dijkstra(int graph[V][V])
 {
     int dist[V];
     bool sptSet[V];
     for (int i = 0; i < V; i++)
         dist[i] = INT_MAX, sptSet[i] = false;
-    dist[src] = 0;
+    dist[0] = 0;
     for (int count = 0; count < V - 1; count++)
     {
         int u = minDistance(dist, sptSet);
@@ -49,6 +49,6 @@ int main()
                        {0, 0, 0, 0, 0, 2, 0, 1, 6},
                        {8, 11, 0, 0, 0, 0, 1, 0, 7},
                        {0, 0, 2, 0, 0, 0, 6, 7, 0}};
-    dijkstra(graph, 0);
+    dijkstra(graph);
     return 0;
 }
