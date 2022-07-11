@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <queue>
 using namespace std;
 
@@ -244,20 +245,33 @@ bool isBST(NODE *pRoot)
     return isBST(pRoot->left) && isBST(pRoot->right);
 }
 
+NODE *createTree_1(NODE *pRoot)
+{
+    fstream fs("bst.txt", ios::in);
+    int n;
+    fs >> n;
+    int x;
+    for (int i = 0; i < n; i++)
+    {
+        fs >> x;
+        Insert(pRoot, x);
+    }
+    return pRoot;
+}
 int main()
 {
     NODE *pRoot = NULL;
     // int a[] = {5, 3, 6, 4, 2, 7};
-    Insert(pRoot, 5);
-    Insert(pRoot, 3);
-    Insert(pRoot, 7);
-    Insert(pRoot, 6);
-    Insert(pRoot, 4);
-    Insert(pRoot, 2);
+    // Insert(pRoot, 5);
+    // Insert(pRoot, 3);
+    // Insert(pRoot, 7);
+    // Insert(pRoot, 6);
+    // Insert(pRoot, 4);
+    // Insert(pRoot, 2);
     // Insert(pRoot, 8);
-    cout << "LevelOrder: ";
-    LevelOrder(pRoot); // 5 3 6 4 2 7
-    cout << '\n';
+    // cout << "LevelOrder: ";
+    // LevelOrder(pRoot); // 5 3 6 4 2 7
+    // cout << '\n';
     /*cout << "\nNumber of nodes: " << countNode(pRoot) << '\n';
     cout << "Sum of all nodes: " << sumNode(pRoot) << '\n';
     NODE *search = Search(pRoot, 6);
@@ -267,18 +281,18 @@ int main()
         cout << "Not found!";*/
     /*int n = sizeof(a) / sizeof(a[0]);
     NODE *r = createTree(a, n, 0);*/
-    cout << "PreOrder: ";
-    preOrder(pRoot); // 5 3 2 4 6 7
-    cout << '\n';
-    cout << "InOrder: ";
-    inOrder(pRoot); // 2 3 4 5 6 7
-    cout << '\n';
-    cout << "PostOrder: ";
-    postOrder(pRoot); // 2 4 3 7 6 5
-    cout << '\n';
-    cout << "Height = ";
-    cout << Height(pRoot);
-    cout << '\n';
+    // cout << "PreOrder: ";
+    // preOrder(pRoot); // 5 3 2 4 6 7
+    // cout << '\n';
+    // cout << "InOrder: ";
+    // inOrder(pRoot); // 2 3 4 5 6 7
+    // cout << '\n';
+    // cout << "PostOrder: ";
+    // postOrder(pRoot); // 2 4 3 7 6 5
+    // cout << '\n';
+    // cout << "Height = ";
+    // cout << Height(pRoot);
+    // cout << '\n';
     /*if(isPerfectBST(pRoot))
         cout << "YES\n";
     else cout << "NO\n";*/
@@ -298,9 +312,11 @@ int main()
     //     cout << "isBST: True\n";
     // else
     //     cout << "isBST: False\n";
-    int x;
-    cout << "Enter a value to find the height: ";
-    cin >> x;
-    cout << "Height of node: " << x << " is: " << heightOfNode(pRoot, x);
+    // int x;
+    // cout << "Enter a value to find the height: ";
+    // cin >> x;
+    // cout << "Height of node: " << x << " is: " << heightOfNode(pRoot, x);
+    NODE *t = createTree_1(pRoot);
+    LevelOrder(t);
     return 0;
 }

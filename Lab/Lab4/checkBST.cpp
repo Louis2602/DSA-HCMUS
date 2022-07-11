@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 struct Node
@@ -80,7 +81,39 @@ bool isBstUtil(Node *root, int minValue, int maxValue)
     else
         return false;
 }
-
+// Cach 3
+bool isBst_2(Node *pRoot)
+{
+    if (pRoot == NULL)
+        return true;
+    static Node *prev = NULL;
+    if (pRoot)
+    {
+        if (!isBst_2(pRoot->left))
+            return false;
+        if (prev != NULL && pRoot->key <= prev->key)
+            return false;
+        prev = pRoot;
+        return isBst_2(pRoot->right);
+    }
+    return true;
+}
+vector<int> v;
+void Inorder(Node *pRoot)
+{
+    if (pRoot == NULL)
+        return;
+    Inorder(pRoot->left);
+    v.push_back(pRoot->key);
+    Inorder(pRoot->right);
+}
+bool isBst_3(Node *pRoot)
+{
+    for (int i = 0; i < v.size() - 1; i++)
+        if (v[i] > v[i + 1])
+            return false;
+    return true;
+}
 bool isFullBst(Node *pRoot)
 {
     if (isBST(pRoot))
@@ -113,6 +146,7 @@ bool isCompleteBST(Node *pRoot, int index, int numNodes)
         return 0;
     return isCompleteBST(pRoot->left, 2 * index + 1, numNodes) && isCompleteBST(pRoot->right, 2 * index + 2, numNodes);
 }
+
 int main()
 {
     Node *root = createNode(3);
@@ -123,7 +157,10 @@ int main()
     // root->right->right = createNode(8);
     // root->right->left = createNode(6)
 
-    if (isBstUtil(root, -1000, 1000))
+    Inorder(root);
+    for (auto &x : v)
+        cout << x << " ";
+    if (isBst_3(root))
         cout << "Is BST\n";
     else
         cout << "Not BST\n";
@@ -137,10 +174,10 @@ int main()
     //     cout << "Is Perfect BST\n";
     // else
     //     cout << "Not Perfect BST\n";
-    int numNodes = countNode(root);
-    if (isCompleteBST(root, 0, numNodes))
-        cout << "Is Complete BST\n";
-    else
-        cout << "Not Complete BST\n";
+    // int numNodes = countNode(root);
+    // if (isCompleteBST(root, 0, numNodes))
+    //     cout << "Is Complete BST\n";
+    // else
+    //     cout << "Not Complete BST\n";
     return 0;
 }
