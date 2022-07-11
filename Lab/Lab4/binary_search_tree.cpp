@@ -33,12 +33,6 @@ void Insert(NODE *&pRoot, int x)
         return;
 }
 
-int countNode(NODE *pRoot)
-{
-    if (pRoot == NULL)
-        return 0;
-    return 1 + countNode(pRoot->left) + countNode(pRoot->right);
-}
 int sumNode(NODE *pRoot)
 {
     if (pRoot == NULL)
@@ -86,12 +80,12 @@ int heightOfNode(NODE *pRoot, int value)
         return Height(p);
     return -1;
 }
-bool isPerfectBST(NODE *pRoot)
-{
-    int len = countNode(pRoot);
-    cout << len << endl;
-    return !(len & (len + 1));
-}
+// bool isPerfectBST(NODE *pRoot)
+// {
+//     int len = countNode(pRoot);
+//     cout << len << endl;
+//     return !(len & (len + 1));
+// }
 void preOrder(NODE *pRoot)
 {
     if (pRoot == NULL)
@@ -258,6 +252,20 @@ NODE *createTree_1(NODE *pRoot)
     }
     return pRoot;
 }
+int countNode(NODE *pRoot)
+{
+    if (pRoot == NULL)
+        return 0;
+    return 1 + countNode(pRoot->left) + countNode(pRoot->right);
+}
+int countRootSmaller(NODE *root, int x)
+{
+    if (root == NULL)
+        return 0;
+    int count = countNode(root);
+    int ans = count - 1 < x ? 1 : 0;
+    return ans + countRootSmaller(root->left, x) + countRootSmaller(root->right, x);
+}
 int main()
 {
     NODE *pRoot = NULL;
@@ -318,5 +326,7 @@ int main()
     // cout << "Height of node: " << x << " is: " << heightOfNode(pRoot, x);
     NODE *t = createTree_1(pRoot);
     LevelOrder(t);
+    cout << '\n';
+    cout << countRootSmaller(t, 2);
     return 0;
 }
