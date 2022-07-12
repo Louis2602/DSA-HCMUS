@@ -130,49 +130,6 @@ void LevelOrder(NODE *pRoot)
         Q.pop();
     }
 }
-NODE *findMin(NODE *pRoot)
-{
-    NODE *cur = pRoot;
-    while (cur && cur->left != NULL)
-        cur = cur->left;
-    return cur;
-}
-void Remove(NODE *&pRoot, int x)
-{
-    if (pRoot == NULL)
-        return;
-    if (x > pRoot->data)
-        Remove(pRoot->right, x);
-    else if (x < pRoot->data)
-        Remove(pRoot->left, x);
-    else
-    {
-        if (pRoot->left == NULL && pRoot->right == NULL)
-        {
-            delete pRoot;
-            pRoot = NULL;
-            return;
-        }
-        else if (pRoot->left == NULL)
-        {
-            NODE *t = pRoot;
-            pRoot = pRoot->right;
-            delete t;
-        }
-        else if (pRoot->right == NULL)
-        {
-            NODE *t = pRoot;
-            pRoot = pRoot->left;
-            delete t;
-        }
-        else
-        {
-            NODE *t = findMin(pRoot->right);
-            pRoot->data = t->data;
-            Remove(pRoot->right, t->data);
-        }
-    }
-}
 int countLeaf(NODE *pRoot)
 {
     if (pRoot == NULL)
@@ -266,6 +223,51 @@ int countRootSmaller(NODE *root, int x)
     int ans = count - 1 < x ? 1 : 0;
     return ans + countRootSmaller(root->left, x) + countRootSmaller(root->right, x);
 }
+
+NODE *findMin(NODE *pRoot)
+{
+    NODE *cur = pRoot;
+    while (cur && cur->left != NULL)
+        cur = cur->left;
+    return cur;
+}
+void Remove(NODE *&pRoot, int x)
+{
+    if (pRoot == NULL)
+        return;
+    // if (x > pRoot->data)
+    Remove(pRoot->right, x);
+    // else if (x < pRoot->data)
+    Remove(pRoot->left, x);
+    if (x > pRoot->data)
+    {
+        if (pRoot->left == NULL && pRoot->right == NULL)
+        {
+            delete pRoot;
+            pRoot = NULL;
+            return;
+        }
+        else if (pRoot->left == NULL)
+        {
+            NODE *t = pRoot;
+            pRoot = pRoot->right;
+            delete t;
+        }
+        else if (pRoot->right == NULL)
+        {
+            NODE *t = pRoot;
+            pRoot = pRoot->left;
+            delete t;
+        }
+        else
+        {
+            NODE *t = findMin(pRoot->right);
+            pRoot->data = t->data;
+            Remove(pRoot->right, t->data);
+        }
+    }
+}
+
 int main()
 {
     NODE *pRoot = NULL;
@@ -327,6 +329,8 @@ int main()
     NODE *t = createTree_1(pRoot);
     LevelOrder(t);
     cout << '\n';
-    cout << countRootSmaller(t, 2);
+    // cout << countRootSmaller(t, 2);
+    Remove(t, 10);
+    LevelOrder(t);
     return 0;
 }
