@@ -48,8 +48,7 @@ NODE *Search(NODE *pRoot, int x)
         Search(pRoot->right, x);
     else if (x < pRoot->data)
         Search(pRoot->left, x);
-    else
-        return pRoot;
+    return pRoot;
 }
 
 NODE *createTree(int a[], int n, int i)
