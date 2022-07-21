@@ -64,7 +64,7 @@ Company *createHashTable(vector<Company> list_company)
 			pC[hval % 2000] = {list_company[i].name, list_company[i].profit_tax, list_company[i].address};
 		else
 		{
-			int temp = hashString(list_company[i].name) % 2000 + 1;
+			int temp = hval % 2000 + 1;
 			while (pC[temp].name != "")
 				temp = (temp + 1) % 2000;
 			pC[temp] = {list_company[i].name, list_company[i].profit_tax, list_company[i].address};
@@ -80,7 +80,7 @@ void Insert(Company *hash_table, Company company)
 		hash_table[hval % 2000] = {company.name, company.profit_tax, company.address};
 	else
 	{
-		int temp = hashString(company.name) % 2000 + 1;
+		int temp = hval % 2000 + 1;
 		while (hash_table[temp].name != "")
 			temp = (temp + 1) % 2000;
 		hash_table[temp] = {company.name, company.profit_tax, company.address};
