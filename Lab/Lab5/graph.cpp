@@ -4,6 +4,8 @@
 #include <list>
 #include <string>
 #include <sstream>
+#include <stack>
+#include <queue>
 
 using namespace std;
 
