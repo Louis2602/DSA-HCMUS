@@ -35,10 +35,9 @@ void readG1()
         }
         cout << endl;
     }
-    fs.close();
 }
 
-void readG2()
+vector<vector<int>> readG2()
 {
     cout << "Adjacency List -> Matrix\n";
     fstream fs("graph2.txt", ios::in);
@@ -68,11 +67,70 @@ void readG2()
         cout << '\n';
     }
     fs.close();
+    return G2;
 }
-
+void findDegree(vector<vector<int>> G) {
+    int degree = 0;
+    for(int i=0; i<G.size(); i++) {
+        degree = 0;
+        for(int j=0; j<G[i].size(); j++) {
+            if(G[i][j] == 1)
+                degree++;
+        }
+        cout << "The degree of vertex " << i << " is: " << degree << '\n';
+    }
+}
+int numEdges(vector<vector<int>> G) {
+    int degree = 0;
+    for(int i=0; i<G.size(); i++)
+        for(int j=0; j<G[i].size(); j++)
+            if(G[i][j] == 1)
+                degree++;
+    return degree/2;
+}
+int numVertices(vector<vector<int>> G) {
+    int vertices = 0;
+    for(int i=0; i<G.size(); i++) {
+        for(int j=0; j<G[i].size(); j++) {
+            if(G[i][j] == 1) {
+                vertices++;
+                break;
+            }
+        }
+    }
+    return vertices;
+}
+void showIsolatedVertices(vector<vector<int>> G) {
+    vector<bool> iV(G.size(), false);
+    for(int i=0; i<G.size(); i++) {
+        for(int j=0; j<G[i].size(); j++) {
+            if(G[i][j] == 1) {
+                iV[i] = true;
+                break;
+            }
+        }
+    }
+    cout << "Isolated Vertices: ";
+    for(int i=0; i<iV.size(); i++) {
+        if(iV[i] == 0)
+            cout << i << " ";
+    }
+    cout << '\n';
+}
+bool checkCompleteGraph(vector<vector<int>> G) {
+    int nV = numVertices(G);
+    int nE = numEdges(G);
+    return nE == (nV*(nV-1))/2 ? true : false;
+}
 int main()
 {
-    readG1();
-    readG2();
+    vector<vector<int>> G2;
+    // readG1();
+    G2 = readG2();
+    findDegree(G2);
+    cout << "Number of edges: " << numEdges(G2) << '\n';
+    cout << "Number of vertices: " << numVertices(G2) << '\n';
+    showIsolatedVertices(G2);
+    cout << "Complete Graph: " << checkCompleteGraph(G2) << '\n';
     return 0;
 }
