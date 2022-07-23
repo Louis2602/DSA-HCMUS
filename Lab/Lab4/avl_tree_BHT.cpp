@@ -77,10 +77,9 @@ void Insert(Node *&pRoot, int x)
 }
 Node *findMin(Node *pRoot)
 {
-    Node *cur = pRoot;
-    while (cur && cur->left)
-        cur = cur->left;
-    return cur;
+    while (pRoot->left)
+        pRoot = pRoot->left;
+    return pRoot;
 }
 void Remove(Node *&pRoot, int x)
 {
