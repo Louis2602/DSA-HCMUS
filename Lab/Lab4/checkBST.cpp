@@ -46,7 +46,7 @@ bool isSubtreeLesser(Node *root, int value)
 {
     if (root == NULL)
         return true;
-    if (root->key <= value && isSubtreeLesser(root->left, value) && isSubtreeLesser(root->right, value))
+    if (root->key < value && isSubtreeLesser(root->left, value) && isSubtreeLesser(root->right, value))
         return true;
     else
         return false;
@@ -97,6 +97,22 @@ bool isBst_2(Node *pRoot)
         return isBst_2(pRoot->right);
     }
     return true;
+}
+// is AVL
+int Height(Node *pRoot)
+{
+    if (pRoot == NULL)
+        return 0;
+    int lh = Height(pRoot->left);
+    int rh = Height(pRoot->right);
+    return 1 + max(lh, rh);
+}
+bool isAVL(Node *pRoot)
+{
+    if (pRoot == NULL)
+        return true;
+    int bal = Height(pRoot->left) - Height(pRoot->right);
+    return (bal > -2) && (bal < 2) && isBST(pRoot) && isAVL(pRoot->left) && isAVL(pRoot->right);
 }
 vector<int> v;
 void Inorder(Node *pRoot)

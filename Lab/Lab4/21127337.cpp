@@ -51,20 +51,20 @@ int Height(Node *pRoot)
 void balance(Node *&pRoot)
 {
     int bal = Height(pRoot->left) - Height(pRoot->right);
-    if (bal >= 2)
+    if (bal > 1)
     {
         if (Height(pRoot->left->left) >= Height(pRoot->left->right))
-            rightRotate(pRoot->left);
+            rightRotate(pRoot);
         else
         {
             leftRotate(pRoot->left);
             rightRotate(pRoot);
         }
     }
-    if (bal <= -2)
+    if (bal < -1)
     {
         if (Height(pRoot->right->right) >= Height(pRoot->right->left))
-            leftRotate(pRoot->right);
+            leftRotate(pRoot);
         else
         {
             rightRotate(pRoot->right);
@@ -102,6 +102,8 @@ void createTree(Node *&pRoot)
 }
 void levelOrder(Node *pRoot)
 {
+    if(pRoot == NULL)
+        return;
     queue<Node *> Q;
     Q.push(pRoot);
     while (!Q.empty())

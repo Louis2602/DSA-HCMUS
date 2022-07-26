@@ -43,7 +43,7 @@ void balance(Node *&pRoot)
     if (h >= 2)
     {
         if (height(pRoot->left->left) >= height(pRoot->left->right))
-            rightRotate(pRoot->left);
+            rightRotate(pRoot);
         if (height(pRoot->left->left) < height(pRoot->left->right))
         {
             leftRotate(pRoot->left);
@@ -54,7 +54,7 @@ void balance(Node *&pRoot)
     if (h <= -2)
     {
         if (height(pRoot->right->right) >= height(pRoot->right->left))
-            leftRotate(pRoot->left);
+            leftRotate(pRoot);
         if (height(pRoot->right->right) < height(pRoot->right->left))
         {
             rightRotate(pRoot->right);
